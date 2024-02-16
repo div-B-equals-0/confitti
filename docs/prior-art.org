@@ -1,0 +1,78 @@
+* Previous literature on conic fitting
+
+There is a large body of literature on conic fitting, much related to computer vision and computer graphics.
+
+Here is just a small sampling of the ones I have found useful.
+
+** Lopez-Rubio:2018a
+I like this one best because the method they propose seems to be very close in spirit to what I was thinking of myself. It is based on comparing the distance of each point from the directrix line (\(d\)) and from the focus point (\(r\)).
+
+Although it seems more sophisticated than what I was thinking of.
+
+*** The cost function
+Instead of using least squares, they calculate the cost function as the sum of the absolute deviations. But they also add an extra penalty term (their equation 12). In my notation, their cost function is
+\[
+\frac{1}{N} \sum_k \left\vert d_k - r_k \right\vert - \lambda d_F
+\]
+where \(d_F\) is the distance from the focus to the directrix, and \(\lambda\) is an adjustable parameter.
+
+This penalty is to try and avoid the degenerate case where the focus and the directrix are very close to each other. Note that in my notation \(d_F = 2 r_0\)
+
+Their Fig 3 shows what happens when they do not include this, which is bad: you get a long thin parabola that tries to fit one of the arms only. /So this looks like a good idea that I should adopt/
+
+*** The optimization
+They calculate by hand the derivatives of the cost function with respect to each of the parameters, and then us a gradient descent method to find the minimum.
+
+*** Initialization
+Again, this is similar to what I was thinking of, but their way is maybe better?
+
+**** Initial focus
+They take the mean of the points as the initial focus. *Exactly what I was planning to do!*
+
+But then later they add a random perturbation: random uniform direction and random Gaussian distance (sigma of half of the standard deviation of the points). 
+**** Initial directrix
+For this, they take the straight line that best-fits the points.
+
+This is not what I was thinking of, I was thinking more in terms of the axis vector (unit normal to the directrix).
+
+Their method would seem to give a directrix that would pass very close to the focus.  I guess that their penalty term would then push it away.
+
+They say that they keep the normal vector of the directrix normalised, which improves stability. /This is also exactly what I had done/ 
+
+**** Restarting
+In order that their gradient descent does not get stuck in a local minimum, they restart the optimization from different initial conditions after a certain number T of iterations.
+
+They just do a different instance of the initial random perturbation to the focus, but also a random perturbation of the directrix.
+
+They stop if the best solution has not changed for 2T iterations. Or if they reach max number of iterations.
+
+** Zhang:1997b
+- Parameter estimation techniques: a tutorial with application to conic fitting
+
+This is a very good overview of the whole field, and clearly explains the different approaches to the calculating the distances:
+
+*** Algebraic distance
+This comes from the general cartesian polynomial equation for a conic section curve:
+: Q(x, y) = Ax2 + 2Bxy + Cy2 + 2Dx + 2Ey + F = 0,
+and just minimising the square of this over all the points.
+: min Σi Q(xi, yi)2
+
+One problem with this is that a good solution would be A = B = C = D = E = F = 0, which is not very useful.
+To get round this, you can do some sort of normalization, e.g, by setting F = 1, or by using the trace of the matrix, or by using the determinant of the matrix.
+
+Another problem is that the solution is not invariant under Euclidean transformations, not even translation. 
+
+*** Geometric distance
+This is the perpendicular distance from the point to the conic. Here the problem is that it is not easy to calculate. But he does it anyway.
+
+
+
+
+** 
+** Direct Linear Transform (DLT) algorithm
+This is a fast method but it does not seem to be very accurate. Copilot says:
+: It is sensitive to noise and outliers, and it does not take into
+: account the geometric properties of the conic.
+It turns out this is not the same as the "Direct" method presented in Harker:2008a, but that one does not work reliably either in the tests shown in Lopez-Rubio:2018a.
+
+* 
