@@ -20,3 +20,34 @@
     - robust ones and non-robust ones
   - It also wraps the emcee MCMC sampler, which I will use to estimate the uncertainties in the parameters
   - This will allow us to try lots of different approaches to see which one works best, and will hopefully avoid having to do restarts of the algorithm "by hand" like in the Lopez-Rubio:2018a paper
+** High-level usage of lmfit
+- Since we have a bespoke objective function, we need to use the ~lmfit.minimize()~ function or the ~lmfit.Minimizer~ class 
+  - The previous time I did something like this I used the ~lmfit.Model~ class, but that is only for when the objective function is the sum of the squares of the differences between the data points and the model curve, which is not quite what we have here
+  - So I will try and use ~lmfit.Minimizer~ instead. This takes a function argument that calculates the objective function
+- We can still use the ~lmfit.Parameters~ class to define the parameters of the model
+  - This is useful because it allows us to define the bounds of the parameters and to freeze and unfreeze them as required
+  - Also we will be able to use ~lmfit.emcee~ to estimate the uncertainties in the parameters via MCMC
+  - Unlike with the ~lmfit.Model~ class, we will have to define the parameters manually, rather than having them be automatically inferred from the signature of the model function
+
+** Objective function
+- The signature is described [[https://lmfit.github.io/lmfit-py/fitting.html#writing-a-fitting-function][here]].
+- The objective function should take the parameters as its first argument, followed by other args and kwargs.
+  - In our case, the only other argument will be the data, unless we also want to include per-point weights
+  - The data is sent as two separate arrays, one for the x values and one for the y values
+- It should return either the vector of residuals that we want to minimize or scalar sum of squares
+  #+begin_example
+    The objective function should return the value to be minimized. For
+    the Levenberg-Marquardt algorithm from leastsq(), this returned value
+    must be an array, with a length greater than or equal to the number of
+    fitting variables in the model. For the other methods, the return
+    value can either be a scalar or an array. If an array is returned, the
+    sum-of-squares of the array will be sent to the underlying fitting
+    method, effectively doing a least-squares optimization of the return
+    values.
+  #+end_example
+- Better to return the array, since that will work with all the minimization algorithms
+- We calculate the residuals as the difference between \(r\) and \(e d\), for each data point
+  - Optionally we scale the residuals by the uncertainties in the data points
+
+** 
+
