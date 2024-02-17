@@ -4,7 +4,7 @@ There is a large body of literature on conic fitting, much related to computer v
 
 Here is just a small sampling of the ones I have found useful.
 
-** Lopez-Rubio:2018a
+** Lopez-Rubio:2018a A fast robust geometric fitting method for parabolic curves
 I like this one best because the method they propose seems to be very close in spirit to what I was thinking of myself. It is based on comparing the distance of each point from the directrix line (\(d\)) and from the focus point (\(r\)).
 
 Although it seems more sophisticated than what I was thinking of.
@@ -46,6 +46,14 @@ They just do a different instance of the initial random perturbation to the focu
 
 They stop if the best solution has not changed for 2T iterations. Or if they reach max number of iterations.
 
+** Nievergelt:2004a Fitting conics of specific types to data
+This fits general conics but can then reject them according to variety (ellipse, hyperbola, etc)
+
+There is a [[http://www.logical.ai/conic/org/fitting.html][blog post with a python implementation]] by Dylan Holmes. And weirdly, it seems to have been written in Emacs Org mode - small world!
+
+
+** Thurnhofer-Hemsi:2020a Ellipse fitting by spatial averaging of random ensembles
+This has the source code available: [[https://icai-uma.github.io/SAREfit/][SAREfit]]. It seems to be written in matlab
 ** Zhang:1997b
 - Parameter estimation techniques: a tutorial with application to conic fitting
 

@@ -1,0 +1,22 @@
+* Implementation of conic fitting algorithm
+
+** High-level overview
++ My original idea was to define an objective function based on the difference between the radial distance \(r\) from the focus and the perpendicular distance \(d\) from the directrix.
+  - In general, we should have \(r = e d\), where \(e\) is the eccentricity of the conic section:
+    - \(e = 0\) for a circle
+    - \(0 < e < 1\) for an ellipse
+    - \(e = 1\) for a parabola
+    - \(e > 1\) for a hyperbola
+  - I am going to concentrate on the parabola case, but in principle the same approach should work for the general case, with the addition of \(e\) as a parameter
++ This method is different from either the geometric distance or algebraic distance approaches that are traditionally used
+  - Geometric distance is like in regular curve-fitting: it is the orthogonal distance from the data point to the curve
+  - Algebraic distance uses the cartesian quadratic equation for the curve and tries to zero that
+  - On the other hand, this "foco-directrix distance" method was already used by Lopez-Rubio:2018a. But they only used it for the parabola case, and their implementation is in MATLAB using gradient descent method
++ So the idea is to minimize the sum of the squares of the differences between \(r\) and \(e d\), for all the data points
+  - This is a nonlinear least-squares problem
+  - I will use the `lmfit` python library to solve it
+  - This wraps lots of different minimization algorithms,
+    - local ones and global ones
+    - robust ones and non-robust ones
+  - It also wraps the emcee MCMC sampler, which I will use to estimate the uncertainties in the parameters
+  - This will allow us to try lots of different approaches to see which one works best, and will hopefully avoid having to do restarts of the algorithm "by hand" like in the Lopez-Rubio:2018a paper
