@@ -22,15 +22,18 @@ def residual(pars, x, y, eps=None):
     cth0 = np.cos(np.deg2rad(theta0))
     sth0 = np.sin(np.deg2rad(theta0))
     eccentricity = parvals["eccentricity"]
-    # radius from focus
+    # Radius from focus
     r = np.hypot(x - x0, y - y0)
-    # distance from directrix (positive for points on same side as the
-    # focus)
-    d = 2 * r0 - (x - x0) * cth0 - (y - y0) * sth0
+    # Distance from directrix (positive for points on same side as the
+    # focus). Note that we calculate e * d, not just d, to avoid
+    # problems when e is small.
+    e_times_d = (1 + eccentricity) * r0 - eccentricity * (
+        (x - x0) * cth0 + (y - y0) * sth0
+    )
     if DEBUG:
-        print(f"r = {r}\nd = {d}\ne d = {eccentricity * d}")
+        print(f"r = {r}\nd = {e_times_d / eccentricity}\ne d = {e_times_d}")
     # return the residuals from the conic section equation: r = e * d
-    return (r - eccentricity * d) / (1 if eps is None else eps)
+    return (r - e_times_d) / (1 if eps is None else eps)
 
 
 def init_conic_from_xy(xdata, ydata):
