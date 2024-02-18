@@ -6,6 +6,11 @@ from scipy.stats import circmean
 
 
 def residual(pars, x, y, eps=None):
+    """
+    Objective function for minimizer: residual difference between
+    radius from focus and (eccentricty times) distance from directrix
+    for each data point.
+    """
     # unpack parameters: extract .value attribute for each parameter
     parvals = pars.valuesdict()
     x0 = parvals["x0"]
@@ -62,8 +67,10 @@ def fit_conic_to_xy(xdata, ydata, eps_data=None, only_parabola=True):
     if only_parabola:
         params["eccentricity"].set(vary=False)
 
-    # do the fit
-    result = lmfit.minimize(
-        residual, params, args=(xdata, ydata, eps_data), method="leastsq"
+    # Create Minimizer object
+    minner = lmfit.Minimizer(
+        residual, params, fcn_args=(xdata, ydata), fcn_kws={"eps": eps_data}
     )
+    # do the fit
+    result = minner.minimize(method="leastsq")
     return result

@@ -1,0 +1,29 @@
+
+* Notebooks
+- These will be used for exploration and demonstration of the code, plus producing graphics output
+- Although I do not want to put too much code in them, anything useful should be moved to the library
+
+** Converting notebooks to python scripts
+- I can use ~nbconvert~ for this
+- Do I want to automate this?
+
+* Testing
+
+** Testing my library code with ~pytest~
+
+** Testing a set of notebooks with ~pytest~ and ~nbval~
+- See [[https://semaphoreci.com/blog/test-jupyter-notebooks-with-pytest-and-nbmake]["How to Test Jupyter Notebooks with Pytest and Nbmake"]] by Alex Remedios
+
+** Testing functions within a notebook with ~ipytest~
+- See [[https://medium.com/@mefengl/using-pytest-in-jupyter-notebooks-a-practical-guide-1ba8e02af288]["Using Pytest in Jupyter Notebooks: A Practical Guide"]] by Mefeng Lin
+* Requirements
+- do I want to use a requirements.txt file?
+- or pyproject.toml?
+* Packaging
+** What sort of system should I use?
+- I have previously tried poetry, but there seem to be a lot more options these days
+* Documentation
+** TODO Building a prettier version of docs for github
+- The org files are great for use within emacs, but github doesn't render them nicely
+  - In particular, it does not support mathjax latex rendering
+- I could maybe export to markdown, but at that point I might as well export to html
