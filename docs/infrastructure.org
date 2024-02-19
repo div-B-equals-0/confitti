@@ -4,7 +4,71 @@
 - Although I do not want to put too much code in them, anything useful should be moved to the library
 
 ** Converting notebooks to python scripts
-- I can use ~nbconvert~ for this
+- I can use ~jupytext~ for this to allow bidirectional syncing
+- Run the following when we have made new notebooks to pair them with python scripts
+  #+begin_src sh :dir ../notebooks :results output verbatim
+    jupytext --set-formats 'ipynb,py:light' *.ipynb *.py
+  #+end_src
+
+  #+RESULTS:
+  #+begin_example
+  [jupytext] Reading demo01-basic.ipynb in format ipynb
+  [jupytext] Updating notebook metadata with '{"jupytext": {"formats": "ipynb,py:light"}}'
+  [jupytext] Loading demo01-basic.py
+  [jupytext] Updating the timestamp of demo01-basic.py
+  [jupytext] Reading demo01-basic.py in format py
+  [jupytext] Updating notebook metadata with '{"jupytext": {"formats": "ipynb,py:light"}}'
+  [jupytext] Loading demo01-basic.ipynb
+  [jupytext] Updating demo01-basic.ipynb
+  [jupytext] Updating demo01-basic.py
+  [jupytext] Reading demo02-emcee.py in format py
+  [jupytext] Updating notebook metadata with '{"jupytext": {"formats": "ipynb,py:light"}}'
+  [jupytext] Updating demo02-emcee.ipynb
+  [jupytext] Updating demo02-emcee.py
+  #+end_example
+- Then after editing either the python or the notebook version, we can sync them as follows
+  #+begin_src sh :dir ../notebooks :results output verbatim
+    jupytext --show-changes --update --sync *.py
+  #+end_src
+
+  #+RESULTS:
+  #+begin_example
+  [jupytext] Reading demo01-basic.py in format py
+  [jupytext] Loading demo01-basic.ipynb
+  [jupytext] Updating the timestamp of demo01-basic.py
+  [jupytext] Reading demo02-emcee.py in format py
+  [jupytext] Loading demo02-emcee.ipynb
+  [jupytext] Updating demo02-emcee.ipynb with this change:
+  @@ -522,7 +522,9 @@
+      "cell_type": "code",
+      "execution_count": 87,
+      "id": "3c5e3649-cc4d-4a20-9908-6249b79c2358",
+  -   "metadata": {},
+  +   "metadata": {
+  +    "lines_to_next_cell": 0
+  +   },
+      "outputs": [
+       {
+        "data": {
+  @@ -569,7 +571,9 @@
+      "cell_type": "code",
+      "execution_count": null,
+      "id": "1ac462f4-75b6-447b-8288-35c0958f43d1",
+  -   "metadata": {},
+  +   "metadata": {
+  +    "lines_to_next_cell": 2
+  +   },
+      "outputs": [],
+      "source": []
+     },
+  [jupytext] Updating the timestamp of demo02-emcee.py
+  #+end_example
+
+  where the ~--show-changes~ flag displays a diff of what has changed and the ~--update~ flag preserves the output cells in the notebook, even if it is being updated from the python file
+
+  #+RESULTS:
+  : [jupytext] Reading demo01-basic.ipynb in format ipynb
+
 - Do I want to automate this?
 
 * Testing
