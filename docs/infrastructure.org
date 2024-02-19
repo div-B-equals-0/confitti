@@ -32,37 +32,12 @@
   #+end_src
 
   #+RESULTS:
-  #+begin_example
-  [jupytext] Reading demo01-basic.py in format py
-  [jupytext] Loading demo01-basic.ipynb
-  [jupytext] Updating the timestamp of demo01-basic.py
-  [jupytext] Reading demo02-emcee.py in format py
-  [jupytext] Loading demo02-emcee.ipynb
-  [jupytext] Updating demo02-emcee.ipynb with this change:
-  @@ -522,7 +522,9 @@
-      "cell_type": "code",
-      "execution_count": 87,
-      "id": "3c5e3649-cc4d-4a20-9908-6249b79c2358",
-  -   "metadata": {},
-  +   "metadata": {
-  +    "lines_to_next_cell": 0
-  +   },
-      "outputs": [
-       {
-        "data": {
-  @@ -569,7 +571,9 @@
-      "cell_type": "code",
-      "execution_count": null,
-      "id": "1ac462f4-75b6-447b-8288-35c0958f43d1",
-  -   "metadata": {},
-  +   "metadata": {
-  +    "lines_to_next_cell": 2
-  +   },
-      "outputs": [],
-      "source": []
-     },
-  [jupytext] Updating the timestamp of demo02-emcee.py
-  #+end_example
+  : [jupytext] Reading demo01-basic.py in format py
+  : [jupytext] Loading demo01-basic.ipynb
+  : [jupytext] Updating the timestamp of demo01-basic.py
+  : [jupytext] Reading demo02-emcee.py in format py
+  : [jupytext] Loading demo02-emcee.ipynb
+  : [jupytext] Updating the timestamp of demo02-emcee.py
 
   where the ~--show-changes~ flag displays a diff of what has changed and the ~--update~ flag preserves the output cells in the notebook, even if it is being updated from the python file
 

@@ -19,8 +19,9 @@
 #
 # We need to explictly add the path to the library since we haven't installed it yet.
 
+import time 
+start_time = time.time()
 import sys
-
 sys.path.append("../src")
 import confit
 import numpy as np
@@ -39,12 +40,12 @@ xpts *= 3
 
 # ## Do the fitting
 #
-# Fit of a general conic with `only_parabola=False` so that the eccentricity is allowed to vary.
+# Fit of parabola and a general conic, as in demo01
 
 result_p = confit.fit_conic_to_xy(xpts, ypts, only_parabola=True)
 result_e = confit.fit_conic_to_xy(xpts, ypts, only_parabola=False)
 
-# Look at the results
+# First look at the general curve. 
 
 result_e
 
@@ -103,13 +104,13 @@ print(best_xy)
 chain_pars = result_emcee_p.flatchain.drop(columns="__lnsigma").to_dict(orient="records")
 len(chain_pars)
 
-# Take every 35th row so we have 100 samples in total and get the xy curves for them all
+# Take every 10th row so we have 350 samples in total and get the xy curves for them all
 
-chain_xy = [confit.XYconic(**row, eccentricity=1.0) for row in chain_pars[10::17]]
+chain_xy = [confit.XYconic(**row, eccentricity=1.0) for row in chain_pars[3::10]]
 
 fig, axes = plt.subplots(1, 2, figsize=(12, 8))
 for ax in axes:
-    ax.scatter(xpts, ypts)
+    ax.scatter(xpts, ypts, zorder=1000)
 
     c = "orange"
     ax.plot(best_xy.x_pts, best_xy.y_pts, color=c)
@@ -143,6 +144,7 @@ chain_xy = [confit.XYconic(**row) for row in chain_pars[1::10]]
 # +
 fig, axes = plt.subplots(1, 2, figsize=(12, 8))
 for ax in axes:
+    ax.scatter(xpts, ypts, zorder=1000)
     c = "orange"
     ax.plot(best_xy.x_pts, best_xy.y_pts, color=c)
     ax.scatter(best_xy.x0, best_xy.y0, marker="+", color=c)
@@ -154,7 +156,6 @@ for ax in axes:
         ax.plot(xy.x_pts, xy.y_pts, color=c, alpha=alpha)
         ax.scatter(xy.x0, xy.y0, marker="+", color="k", alpha=alpha)
         ax.plot([xy.x0, xy.x_mirror], [xy.y0, xy.y_mirror], color="k", alpha=alpha)
-    ax.scatter(xpts, ypts, zorder=1000)
     ax.set_aspect("equal")
     
 margin = 50
@@ -175,13 +176,21 @@ axes[1].set(
 # ## Try and put limits on parameters to avoid the "unreasonable" global minima
 #
 # In the parabola case, we have a whole bunch of supposedly valid fits that have small value of `r0` (less than 1) coupled with large values of `x0` and `y0` (more than 30) and `theta0` angles around 30 deg. In the figure above, they can be seen to all be well separated from the "good" fits.  So if we put bounds on `r0` we could possibly eliminate them. 
+#
+# Also, the first time I tried this, it found a whole bunch of garbage solutions, for which the estimate of `__lnsigma` was large, where `__lnsigma` is an extra parameter that gets automatically added by emcee that holds an estimate of the data point uncertainty. Of course, if this is large then any model would fit and so the results are meaningless. We can fix this by explicitly adding the parameter ourselves and putting an upper bound on it. 
 
 new_params = result_p.params.copy()
 rscale = new_params["r0"].value
 new_params["r0"].set(min=rscale/2, max=rscale*2)
+new_params.add('__lnsigma', value=np.log(0.1), min=np.log(0.001), max=np.log(1))
 new_params
 
-result_emcee_pp = lmfit.minimize(confit.residual, args=(xpts, ypts), method='emcee', params=new_params, **emcee_kws)
+# We got a complaint about the chains being too short, so I have increased to 5000
+
+long_emcee_kws = emcee_kws | dict(steps=5000, burn=1000)
+long_emcee_kws
+
+result_emcee_pp = lmfit.minimize(confit.residual, args=(xpts, ypts), method='emcee', params=new_params, **long_emcee_kws)
 
 result_emcee_pp
 
@@ -190,9 +199,22 @@ emcee_plot_p = corner.corner(
     result_emcee_pp.flatchain, labels=result_emcee_pp.var_names, truths=truths, bins=50,
 )
 
+# Finally, we have a nice-looking corner plot with elliptical contours!
+
+plt.plot(result_emcee_pp.acceptance_fraction, 'o')
+plt.xlabel('walker')
+plt.ylabel('acceptance fraction')
+plt.show()
+
+# And the acceptance fraction looks fine.
+
+len(result_emcee_pp.flatchain)
+
+# Now that we have a longer chain, we have to be careful not to take too many samples for the plot, so take every 100th, which should give 200 samples
+
 best_xy = confit.XYconic(**result_p.params.valuesdict())
 chain_pars = result_emcee_pp.flatchain.drop(columns="__lnsigma").to_dict(orient="records")
-chain_xy = [confit.XYconic(**row, eccentricity=1.0) for row in chain_pars[1::10]]
+chain_xy = [confit.XYconic(**row, eccentricity=1.0) for row in chain_pars[1::100]]
 
 # +
 fig, axes = plt.subplots(1, 2, figsize=(12, 8))
@@ -222,6 +244,10 @@ axes[1].set(
     ylim=[ypts.min() - margin, ypts.max() + margin],
 )
 ...;
+# -
 
-# +
-# corner.corner?
+# So now we have a nice clean set of parabola fits. We can see visually the correlation between `x0` and `theta0`: as the focus moves left or right, the parabola axis has to swing around to accomodate the data points. Similarly, the correlation between `y0` and `r0` is due to the vertical orientation of the axis. 
+
+# ## Execution time for notebook
+
+print("--- %s seconds ---" % (time.time() - start_time))
