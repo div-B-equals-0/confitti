@@ -16,34 +16,99 @@
   [jupytext] Updating notebook metadata with '{"jupytext": {"formats": "ipynb,py:light"}}'
   [jupytext] Loading demo01-basic.py
   [jupytext] Updating the timestamp of demo01-basic.py
+  [jupytext] Reading demo02-emcee.ipynb in format ipynb
+  [jupytext] Updating notebook metadata with '{"jupytext": {"formats": "ipynb,py:light"}}'
+  [jupytext] Loading demo02-emcee.py
+  [jupytext] Updating the timestamp of demo02-emcee.py
+  [jupytext] Reading demo03-proplyd.ipynb in format ipynb
+  [jupytext] Updating notebook metadata with '{"jupytext": {"formats": "ipynb,py:light"}}'
+  [jupytext] Updating demo03-proplyd.ipynb
+  [jupytext] Updating demo03-proplyd.py
   [jupytext] Reading demo01-basic.py in format py
   [jupytext] Updating notebook metadata with '{"jupytext": {"formats": "ipynb,py:light"}}'
   [jupytext] Loading demo01-basic.ipynb
-  [jupytext] Updating demo01-basic.ipynb
-  [jupytext] Updating demo01-basic.py
+  [jupytext] Updating the timestamp of demo01-basic.py
   [jupytext] Reading demo02-emcee.py in format py
   [jupytext] Updating notebook metadata with '{"jupytext": {"formats": "ipynb,py:light"}}'
-  [jupytext] Updating demo02-emcee.ipynb
-  [jupytext] Updating demo02-emcee.py
+  [jupytext] Loading demo02-emcee.ipynb
+  [jupytext] Updating the timestamp of demo02-emcee.py
   #+end_example
-- Then after editing either the python or the notebook version, we can sync them as follows
+- Then after editing either the python version, we can sync them as follows
   #+begin_src sh :dir ../notebooks :results output verbatim
     jupytext --show-changes --update --sync *.py
   #+end_src
 
   #+RESULTS:
-  : [jupytext] Reading demo01-basic.py in format py
-  : [jupytext] Loading demo01-basic.ipynb
-  : [jupytext] Updating the timestamp of demo01-basic.py
-  : [jupytext] Reading demo02-emcee.py in format py
-  : [jupytext] Loading demo02-emcee.ipynb
-  : [jupytext] Updating the timestamp of demo02-emcee.py
-
+  #+begin_example
+  [jupytext] Reading demo01-basic.py in format py
+  [jupytext] Loading demo01-basic.ipynb
+  [jupytext] Updating the timestamp of demo01-basic.py
+  [jupytext] Reading demo02-emcee.py in format py
+  [jupytext] Loading demo02-emcee.ipynb
+  [jupytext] Updating the timestamp of demo02-emcee.py
+  [jupytext] Reading demo03-proplyd.py in format py
+  [jupytext] Loading demo03-proplyd.ipynb
+  [jupytext] Updating demo03-proplyd.ipynb with this change:
+  @@ -7,7 +7,7 @@
+      "source": [
+       "# Fit conic to real data from proplyd arcs\n",
+       "\n",
+  -    "We will use the same data that we used in Tarango Yong & Henney (2018) to demonstrate the circle-fit algorithm. \n",
+  +    "We will use the same data that we used in Tarango Yong & Henney (2018) to demonstrate the circle-fit algorithm.\n",
+       "\n"
+      ]
+     },
+  @@ -25,7 +25,45 @@
+      "id": "368d4ee9-3511-48d0-8008-17b3d63a9e59",
+      "metadata": {},
+      "outputs": [],
+  -   "source": []
+  +   "source": [
+  +    "import time"
+  +   ]
+  +  },
+  +  {
+  +   "cell_type": "code",
+  +   "execution_count": null,
+  +   "id": "c2ab6f94",
+  +   "metadata": {},
+  +   "outputs": [],
+  +   "source": [
+  +    "start_time = time.time()\n",
+  +    "import sys"
+  +   ]
+  +  },
+  +  {
+  +   "cell_type": "code",
+  +   "execution_count": null,
+  +   "id": "344f41c8",
+  +   "metadata": {},
+  +   "outputs": [],
+  +   "source": [
+  +    "sys.path.append(\"../src\")\n",
+  +    "import confit\n",
+  +    "import numpy as np\n",
+  +    "import lmfit\n",
+  +    "from matplotlib import pyplot as plt\n",
+  +    "import seaborn as sns"
+  +   ]
+  +  },
+  +  {
+  +   "cell_type": "code",
+  +   "execution_count": null,
+  +   "id": "f2172966",
+  +   "metadata": {},
+  +   "outputs": [],
+  +   "source": [
+  +    "sns.set_context(\"notebook\", font_scale=1.2)"
+  +   ]
+     }
+    ],
+    "metadata": {
+  [jupytext] Updating the timestamp of demo03-proplyd.py
+  #+end_example
   where the ~--show-changes~ flag displays a diff of what has changed and the ~--update~ flag preserves the output cells in the notebook, even if it is being updated from the python file
-
-  #+RESULTS:
-  : [jupytext] Reading demo01-basic.ipynb in format ipynb
-
+- It is not necessary to use this after editing the ~.ipynb~ file since the ~.py~ file will be updated automatically.
 - Do I want to automate this?
 
 * Testing

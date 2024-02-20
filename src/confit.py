@@ -107,8 +107,9 @@ class XYconic:
         self.y_pts = self.y0 + r_pts * np.sin(theta0_rad + theta_pts)
         self.x_apex = self.x0 + self.r0 * np.cos(theta0_rad)
         self.y_apex = self.y0 + self.r0 * np.sin(theta0_rad)
-        self.x_mirror = self.x0 + 2 * self.r0 * np.cos(theta0_rad)
-        self.y_mirror = self.y0 + 2 * self.r0 * np.sin(theta0_rad)
+        d = self.r0 / self.eccentricity
+        self.x_mirror = self.x0 + (self.r0 + d) * np.cos(theta0_rad)
+        self.y_mirror = self.y0 + (self.r0 + d) * np.sin(theta0_rad)
 
     def __repr__(self):
         return (
