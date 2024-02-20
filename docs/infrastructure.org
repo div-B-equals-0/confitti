@@ -50,8 +50,11 @@
 
 ** Testing my library code with ~pytest~
 
-** Testing a set of notebooks with ~pytest~ and ~nbval~
+** Testing a set of notebooks with ~pytest~ and ~nbmake~
 - See [[https://semaphoreci.com/blog/test-jupyter-notebooks-with-pytest-and-nbmake]["How to Test Jupyter Notebooks with Pytest and Nbmake"]] by Alex Remedios
+
+*** Just testing that they run without modifying the .ipynb file
+The default behavior of ~nbmake~ is read only. It checks that the notebooks run, but does not overwrite them. 
 
 ** Testing functions within a notebook with ~ipytest~
 - See [[https://medium.com/@mefengl/using-pytest-in-jupyter-notebooks-a-practical-guide-1ba8e02af288]["Using Pytest in Jupyter Notebooks: A Practical Guide"]] by Mefeng Lin

@@ -28,6 +28,7 @@ import numpy as np
 import lmfit
 from matplotlib import pyplot as plt
 import seaborn as sns
+sns.set_context("notebook", font_scale=1.2)
 
 # ## Test data
 #
@@ -91,8 +92,6 @@ truths = [result_p.params.valuesdict()[name] for name in result_p.var_names] + [
 emcee_plot_p = corner.corner(
     result_emcee_p.flatchain, labels=result_emcee_p.var_names, truths=truths,
 )
-
-
 
 # ## Plotting the best fit onto the data
 
@@ -175,6 +174,8 @@ axes[1].set(
 
 # ## Try and put limits on parameters to avoid the "unreasonable" global minima
 #
+# ### Getting rid of the long narrow parabolae
+#
 # In the parabola case, we have a whole bunch of supposedly valid fits that have small value of `r0` (less than 1) coupled with large values of `x0` and `y0` (more than 30) and `theta0` angles around 30 deg. In the figure above, they can be seen to all be well separated from the "good" fits.  So if we put bounds on `r0` we could possibly eliminate them. 
 #
 # Also, the first time I tried this, it found a whole bunch of garbage solutions, for which the estimate of `__lnsigma` was large, where `__lnsigma` is an extra parameter that gets automatically added by emcee that holds an estimate of the data point uncertainty. Of course, if this is large then any model would fit and so the results are meaningless. We can fix this by explicitly adding the parameter ourselves and putting an upper bound on it. 
@@ -247,6 +248,82 @@ axes[1].set(
 # -
 
 # So now we have a nice clean set of parabola fits. We can see visually the correlation between `x0` and `theta0`: as the focus moves left or right, the parabola axis has to swing around to accomodate the data points. Similarly, the correlation between `y0` and `r0` is due to the vertical orientation of the axis. 
+
+# ### Pruning the diversity of conic solutions
+#
+# In the good parabola fits, we find `__lnsigma = -1.5` approx, which is $\sigma \approx 0.2$. This is also the same order as the residuals to the best fit, which we saw in demo01.  Therefore, we should probably be rejecting any fits that require a much larger uncertainty in the data points. From the histogram in the corner plot above, it looks like `__lnsigma < -0.5` is a reasonable choice.
+
+new_params = result_e.params.copy()
+rscale = new_params["r0"].value
+new_params["r0"].set(min=rscale/3, max=rscale*3)
+new_params.add('__lnsigma', value=np.log(0.1), min=np.log(0.001), max=-0.8)
+new_params
+
+result_emcee_ee = lmfit.minimize(confit.residual, args=(xpts, ypts), method='emcee', params=new_params, **long_emcee_kws)
+
+result_emcee_ee
+
+truths = list(result_emcee_ee.params.valuesdict().values())
+emcee_plot_ee = corner.corner(
+    result_emcee_ee.flatchain, labels=result_emcee_ee.var_names, truths=truths, bins=30,
+)
+
+# So this is much better than before, although the contours have some pretty weird shapes. We can see from the bottom row of panels that all the "interesting" behavior is combined to the higher values of `__lnsigma`, so if we could have an independent restriction of the data point uncertainties, then we could eliminate much of the nonsense. 
+
+best_xy = confit.XYconic(**result_e.params.valuesdict())
+chain_pars = result_emcee_ee.flatchain.drop(columns="__lnsigma").to_dict(orient="records")
+chain_xy = [confit.XYconic(**row) for row in chain_pars[7::50]]
+
+# Choose a color map for distinguishing the eccentricity
+
+import matplotlib as mpl
+cmap = mpl.cm.rainbow
+cmap
+
+# Set up a mapping using the $\pm 2 \sigma$ range of eccentricity. 
+
+eparam = result_emcee_ee.params["eccentricity"]
+emin, emax = eparam.value - 2 * eparam.stderr, eparam.value + 2 * eparam.stderr
+norm = mpl.colors.Normalize(vmin=emin, vmax=emax)
+norm(1.0)
+
+# +
+fig, axes = plt.subplots(1, 2, figsize=(12, 8))
+
+for ax in axes:
+    c = "orange"
+    ax.plot(best_xy.x_pts, best_xy.y_pts, color=c)
+    ax.scatter(best_xy.x0, best_xy.y0, marker="+", color=c)
+    ax.plot([best_xy.x0, best_xy.x_mirror], [best_xy.y0, best_xy.y_mirror], color=c)
+
+    c = "m"
+    alpha = 0.1
+    for xy in chain_xy:
+        c = cmap(norm(xy.eccentricity))
+        ax.plot(xy.x_pts, xy.y_pts, color=c, alpha=alpha)
+        ax.scatter(xy.x0, xy.y0, marker="+", color=c, alpha=alpha)
+        ax.plot([xy.x0, xy.x_mirror], [xy.y0, xy.y_mirror], color=c, alpha=alpha)
+    ax.scatter(xpts, ypts, zorder=1000)
+    ax.set_aspect("equal")
+    
+margin = 50
+axes[0].set(
+    xlim=[xpts.min() - margin, xpts.max() + margin],
+    ylim=[ypts.min() - margin, ypts.max() + margin],
+)
+margin = 5
+axes[1].set(
+    xlim=[xpts.min() - margin, xpts.max() + margin],
+    ylim=[ypts.min() - margin, ypts.max() + margin],
+)
+
+fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=cmap), ax=axes[1], orientation="horizontal", label="eccentricity")
+...;
+# -
+
+# Here we can see that the full range of eccentricities is pretty much filled in. We are rainbow color coding the samples according to the eccentricity from blue (low eccentricity ellipses, $e < 0.5$) through cyan, green, yellow to orange (parabolas, $e = 1$) and red (hyperbolae, $e > 1$). 
+#
+# The samples around $e \approx 1$ have a vertical orientation, whereas the ellipses slew to the right as the eccentricity decreases. Note however that the ellipses with $e < 0.8$ do not fit very well, bulging in front of the points in the near wing. If we had more points in the wings, especially on the right, we could probably eliminate this fits from the running. 
 
 # ## Execution time for notebook
 
