@@ -36,6 +36,7 @@
 - Then after editing either the python version, we can sync them as follows
   #+begin_src sh :dir ../notebooks :results output verbatim
     jupytext --show-changes --update --sync *.py
+    printf "\nLast run: $(date)\n"
   #+end_src
 
   #+RESULTS:
@@ -48,64 +49,12 @@
   [jupytext] Updating the timestamp of demo02-emcee.py
   [jupytext] Reading demo03-proplyd.py in format py
   [jupytext] Loading demo03-proplyd.ipynb
-  [jupytext] Updating demo03-proplyd.ipynb with this change:
-  @@ -7,7 +7,7 @@
-      "source": [
-       "# Fit conic to real data from proplyd arcs\n",
-       "\n",
-  -    "We will use the same data that we used in Tarango Yong & Henney (2018) to demonstrate the circle-fit algorithm. \n",
-  +    "We will use the same data that we used in Tarango Yong & Henney (2018) to demonstrate the circle-fit algorithm.\n",
-       "\n"
-      ]
-     },
-  @@ -25,7 +25,45 @@
-      "id": "368d4ee9-3511-48d0-8008-17b3d63a9e59",
-      "metadata": {},
-      "outputs": [],
-  -   "source": []
-  +   "source": [
-  +    "import time"
-  +   ]
-  +  },
-  +  {
-  +   "cell_type": "code",
-  +   "execution_count": null,
-  +   "id": "c2ab6f94",
-  +   "metadata": {},
-  +   "outputs": [],
-  +   "source": [
-  +    "start_time = time.time()\n",
-  +    "import sys"
-  +   ]
-  +  },
-  +  {
-  +   "cell_type": "code",
-  +   "execution_count": null,
-  +   "id": "344f41c8",
-  +   "metadata": {},
-  +   "outputs": [],
-  +   "source": [
-  +    "sys.path.append(\"../src\")\n",
-  +    "import confit\n",
-  +    "import numpy as np\n",
-  +    "import lmfit\n",
-  +    "from matplotlib import pyplot as plt\n",
-  +    "import seaborn as sns"
-  +   ]
-  +  },
-  +  {
-  +   "cell_type": "code",
-  +   "execution_count": null,
-  +   "id": "f2172966",
-  +   "metadata": {},
-  +   "outputs": [],
-  +   "source": [
-  +    "sns.set_context(\"notebook\", font_scale=1.2)"
-  +   ]
-     }
-    ],
-    "metadata": {
   [jupytext] Updating the timestamp of demo03-proplyd.py
+  [jupytext] Reading demo04-other-proplyd.py in format py
+  [jupytext] Updating demo04-other-proplyd.ipynb
+  [jupytext] Updating the timestamp of demo04-other-proplyd.py
+
+  Last run: Mon Feb 26 22:20:19 CST 2024
   #+end_example
   where the ~--show-changes~ flag displays a diff of what has changed and the ~--update~ flag preserves the output cells in the notebook, even if it is being updated from the python file
 - It is not necessary to use this after editing the ~.ipynb~ file since the ~.py~ file will be updated automatically.

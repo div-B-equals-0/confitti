@@ -67,7 +67,14 @@ def init_conic_from_xy(xdata, ydata):
     }
 
 
-def fit_conic_to_xy(xdata, ydata, eps_data=None, only_parabola=True):
+def fit_conic_to_xy(
+    xdata,
+    ydata,
+    eps_data=None,
+    only_parabola=True,
+    restrict_xy=False,
+    restrict_theta=False,
+):
     """Fit a conic section curve to discrete (x, y) data points."""
     # create a set of Parameters with initial values
     params = lmfit.create_params(**init_conic_from_xy(xdata, ydata))
@@ -77,7 +84,17 @@ def fit_conic_to_xy(xdata, ydata, eps_data=None, only_parabola=True):
     params["eccentricity"].set(min=0.0)
     if only_parabola:
         params["eccentricity"].set(vary=False)
-
+    if restrict_xy:
+        # Do not allow center to be too far outside of the data points
+        wx = max(xdata) - min(xdata)
+        wy = max(ydata) - min(ydata)
+        params["x0"].set(min=min(xdata) - wx, max=max(xdata) + wx)
+        params["y0"].set(min=min(ydata) - wy, max=max(ydata) + wy)
+    if restrict_theta:
+        # Do not allow angle to be too far from the initial value
+        params["theta0"].set(
+            min=params["theta0"].value - 45.0, max=params["theta0"].value + 45.0
+        )
     # Create Minimizer object
     minner = lmfit.Minimizer(
         residual, params, fcn_args=(xdata, ydata), fcn_kws={"eps": eps_data}
@@ -97,7 +114,14 @@ class XYconic:
         self.theta0 = theta0
         theta0_rad = np.deg2rad(theta0)
         self.eccentricity = eccentricity
-        theta_pts = np.linspace(-np.pi, np.pi, 200)
+        if eccentricity < 1.0:
+            theta_pts = np.linspace(-np.pi, np.pi, 200)
+        else:
+            # for hyperbolae we only want one of the branches, which
+            # means going up to the asymptotic angle
+            theta_inf = np.pi - np.arctan(np.sqrt(eccentricity**2 - 1))
+            theta_pts = np.linspace(-theta_inf, theta_inf, 200)
+
         r_pts = (
             self.r0
             * (1 + self.eccentricity)

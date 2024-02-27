@@ -13,9 +13,9 @@
 #     name: python3
 # ---
 
-# # Fit conic to real data from proplyd arcs
+# # Fit conic to real data from proplyd arcs (second proplyd)
 #
-# We will use the same data that we used in Tarango Yong & Henney (2018) to demonstrate the circle-fit algorithm.
+# We will use the same data that we used in Tarango Yong & Henney (2018) to demonstrate the circle-fit algorithm. This is identical to demo04, except for the data file.
 #
 #
 
@@ -43,7 +43,7 @@ sns.set_context("notebook", font_scale=1.2)
 
 datapath = Path.cwd().parent / "data"
 figpath = Path.cwd().parent / "figs"
-saveprefix = "demo03"
+saveprefix = "demo04"
 
 
 # ### Read arc points in celestial coordinates from DS9-format regions file
@@ -67,7 +67,7 @@ def read_arc_data_ds9(filename, pt_star="o", pt_arc="x"):
     return star, points
 
 
-star, points = read_arc_data_ds9(datapath / "new-069-601-ridge.reg")
+star, points = read_arc_data_ds9(datapath / "new-w000-400-ridge.reg")
 
 star.center
 
@@ -92,10 +92,14 @@ ax.scatter(xpts, ypts)
 ax.set_aspect("equal")
 ...
 
+confit.init_conic_from_xy(xpts, ypts)
+
 # ## Fit the arc
 
 result_p = confit.fit_conic_to_xy(xpts, ypts, only_parabola=True)
-result_e = confit.fit_conic_to_xy(xpts, ypts, only_parabola=False)
+result_e = confit.fit_conic_to_xy(xpts, ypts, only_parabola=False, restrict_xy=True, restrict_theta=False)
+
+result_p
 
 result_e
 
@@ -179,18 +183,18 @@ emcee_plot = corner.corner(
 emcee_plot.savefig(figpath / f"{saveprefix}-corner.pdf", bbox_inches="tight")
 
 best_xy = confit.XYconic(**result_e.params.valuesdict())
-chain_pars = result_emcee.flatchain.drop(columns="__lnsigma").to_dict(
-    orient="records"
-)
+chain_pars = result_emcee.flatchain.drop(columns="__lnsigma").to_dict(orient="records")
 chain_xy = [confit.XYconic(**row) for row in chain_pars[7::200]]
 
 len(chain_xy)
 
 import matplotlib as mpl
+
 cmap = mpl.cm.rainbow
 
 eparam = result_emcee.params["eccentricity"]
-emin, emax = eparam.value - 2 * eparam.stderr, eparam.value + 2 * eparam.stderr
+#emin, emax = eparam.value - 2 * eparam.stderr, eparam.value + 2 * eparam.stderr
+emin, emax = np.percentile(result_emcee.flatchain["eccentricity"], [5, 95])
 norm = mpl.colors.Normalize(vmin=emin, vmax=emax)
 norm(1.0)
 
@@ -232,7 +236,7 @@ fig.colorbar(
     orientation="horizontal",
     label="eccentricity",
 )
-...;
+...
 # -
 
 fig.savefig(figpath / f"{saveprefix}-emcee-samples.pdf", bbox_inches="tight")
