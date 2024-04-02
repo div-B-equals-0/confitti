@@ -23,6 +23,7 @@ import time
 
 start_time = time.time()
 import sys
+from pathlib import Path
 
 sys.path.append("../src")
 import confit
@@ -32,6 +33,9 @@ from matplotlib import pyplot as plt
 import seaborn as sns
 
 sns.set_context("notebook", font_scale=1.2)
+
+figpath = Path.cwd().parent / "figs"
+saveprefix = "demo02"
 
 # ## Test data
 #
@@ -92,6 +96,8 @@ emcee_plot = corner.corner(
 )
 # -
 
+emcee_plot.savefig(figpath / f"{saveprefix}-corner-e.pdf", bbox_inches="tight")
+
 result_emcee_p = lmfit.minimize(
     confit.residual,
     args=(xpts, ypts),
@@ -116,6 +122,8 @@ emcee_plot_p = corner.corner(
     labels=result_emcee_p.var_names,
     truths=truths,
 )
+
+emcee_plot_p.savefig(figpath / f"{saveprefix}-corner-p.pdf", bbox_inches="tight")
 
 # ## Plotting the best fit onto the data
 
@@ -162,6 +170,8 @@ axes[1].set(
 )
 ...
 
+fig.savefig(figpath / f"{saveprefix}-emcee-samples-p.pdf", bbox_inches="tight")
+
 best_xy = confit.XYconic(**result_e.params.valuesdict())
 chain_pars = result_emcee.flatchain.drop(columns="__lnsigma").to_dict(orient="records")
 chain_xy = [confit.XYconic(**row) for row in chain_pars[1::10]]
@@ -196,6 +206,8 @@ axes[1].set(
 ...
 # -
 
+
+fig.savefig(figpath / f"{saveprefix}-emcee-samples-e.pdf", bbox_inches="tight")
 
 # ## Try and put limits on parameters to avoid the "unreasonable" global minima
 #
@@ -235,6 +247,8 @@ emcee_plot_p = corner.corner(
     truths=truths,
     bins=50,
 )
+
+emcee_plot_p.savefig(figpath / f"{saveprefix}-corner-p-improved.pdf", bbox_inches="tight")
 
 # Finally, we have a nice-looking corner plot with elliptical contours!
 
@@ -285,6 +299,8 @@ axes[1].set(
 ...
 # -
 
+fig.savefig(figpath / f"{saveprefix}-emcee-samples-p-improved.pdf", bbox_inches="tight")
+
 # So now we have a nice clean set of parabola fits. We can see visually the correlation between `x0` and `theta0`: as the focus moves left or right, the parabola axis has to swing around to accomodate the data points. Similarly, the correlation between `y0` and `r0` is due to the vertical orientation of the axis.
 
 # ### Pruning the diversity of conic solutions
@@ -314,6 +330,8 @@ emcee_plot_ee = corner.corner(
     truths=truths,
     bins=30,
 )
+
+emcee_plot_ee.savefig(figpath / f"{saveprefix}-corner-e-improved.pdf", bbox_inches="tight")
 
 # So this is much better than before, although the contours have some pretty weird shapes. We can see from the bottom row of panels that all the "interesting" behavior is combined to the higher values of `__lnsigma`, so if we could have an independent restriction of the data point uncertainties, then we could eliminate much of the nonsense.
 
@@ -375,6 +393,8 @@ fig.colorbar(
 )
 ...;
 # -
+
+fig.savefig(figpath / f"{saveprefix}-emcee-samples-e-improved.pdf", bbox_inches="tight")
 
 # Here we can see that the full range of eccentricities is pretty much filled in. We are rainbow color coding the samples according to the eccentricity from blue (low eccentricity ellipses, $e < 0.5$) through cyan, green, yellow to orange (parabolas, $e = 1$) and red (hyperbolae, $e > 1$).
 #

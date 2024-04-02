@@ -15,7 +15,9 @@
 
 # # Fit conic to real data from proplyd arcs (second proplyd)
 #
-# We will use the same data that we used in Tarango Yong & Henney (2018) to demonstrate the circle-fit algorithm. This is identical to demo04, except for the data file.
+# We will use the same data that we used in Tarango Yong & Henney (2018) to demonstrate the circle-fit algorithm. This started off identical to demo04, except for the data file. But it quickly takes a very different turn, due to the best fit being an lowish-eccentricity ellipse rather than a hyperbola. 
+#
+# It turns out that the residual function prefers to fit the data points to the "back" side of the ellipse (the side away from the focus). This means that the orientation of the ellipse axis gets flipped. 
 #
 #
 
@@ -120,7 +122,7 @@ for xy, c in [[bestp_xy, "orange"], [beste_xy, "m"]]:
 ax.axhline(0, lw=0.5, c="k")
 ax.axvline(0, lw=0.5, c="k")
 ax.set_aspect("equal")
-margin = 8
+margin = 80
 ax.set(
     xlim=[xpts.min() - margin, xpts.max() + margin],
     ylim=[ypts.min() - margin, ypts.max() + margin],

@@ -19,6 +19,9 @@
 #
 # We need to explictly add the path to the library since we haven't installed it yet. 
 
+import time
+start_time = time.time()
+from pathlib import Path
 import sys
 sys.path.append('../src')
 import confit
@@ -32,6 +35,11 @@ import seaborn as sns
 # +
 # confit?
 # -
+
+# ## Where to save the figures
+
+figpath = Path.cwd().parent / "figs"
+saveprefix = "demo01"
 
 # ## Test data
 #
@@ -47,6 +55,8 @@ fig, ax = plt.subplots()
 ax.scatter(xpts, ypts)
 ax.set_aspect("equal")
 ...;
+
+fig.savefig(figpath / f"{saveprefix}-points.pdf", bbox_inches="tight")
 
 # ## Initial guess at conic parameters
 #
@@ -110,6 +120,8 @@ ax.set(
 )
 ...;
 
+fig.savefig(figpath / f"{saveprefix}-residuals.pdf", bbox_inches="tight")
+
 # This shows that the general conic (orange) fits slightly better in the wings (data points 1, 2, 5, 6) but the residuals are much larger around the apex, and no smooth curve could do anything to improve that. 
 #
 # Now look at the distances that go into the residuals. 
@@ -137,14 +149,14 @@ print(init_xy)
 
 # +
 fig, ax = plt.subplots()
-ax.scatter(xpts, ypts)
+ax.scatter(xpts, ypts, color="k")
 
-c = "orange"
+c = "C0"
 ax.plot(bestp_xy.x_pts, bestp_xy.y_pts, color=c)
 ax.scatter(bestp_xy.x0, bestp_xy.y0, marker="+", color=c)
 ax.plot([bestp_xy.x0, bestp_xy.x_mirror], [bestp_xy.y0, bestp_xy.y_mirror], color=c)
 
-c = "m"
+c = "C1"
 ax.plot(beste_xy.x_pts, beste_xy.y_pts, color=c)
 ax.scatter(beste_xy.x0, beste_xy.y0, marker="+", color=c)
 ax.plot([beste_xy.x0, beste_xy.x_mirror], [beste_xy.y0, beste_xy.y_mirror], color=c)
@@ -162,4 +174,8 @@ ax.set(
 )
 ...;
 # -
+fig.savefig(figpath / f"{saveprefix}-best-fits.pdf", bbox_inches="tight")
 
+# ## Execution time for notebook
+
+print(f"--- {time.time() - start_time} seconds ---")

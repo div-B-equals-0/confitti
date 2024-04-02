@@ -60,12 +60,21 @@ def read_arc_data_ds9(filename, pt_star="o", pt_arc="x"):
     regions = rg.Regions.read(filename)
 
     try:
-        (star,) = [x for x in regions if x.visual["point"] == pt_star]
+        (star,) = [x for x in regions if x.visual["marker"] == pt_star]
     except IndexError:
         sys.exit("One and only one 'circle' region is required")
-    points = [x for x in regions if x.visual["point"] == pt_arc]
+    points = [x for x in regions if x.visual["marker"] == pt_arc]
     return star, points
 
+
+filename = datapath / "new-069-601-ridge.reg"
+regions = rg.Regions.read(filename)
+
+regions[0].meta
+
+regions[0].visual
+
+regions[1].visual
 
 star, points = read_arc_data_ds9(datapath / "new-069-601-ridge.reg")
 
