@@ -42,8 +42,8 @@ def init_conic_from_xy(xdata, ydata):
     assert len(xdata) == len(ydata)
     assert len(xdata) > 4  # Need at least 5 points to fit a conic
     # Focus is initialized to be median position of the data points
-    x0 = np.median(xdata)
-    y0 = np.median(ydata)
+    x0 = np.mean(xdata)
+    y0 = np.mean(ydata)
     # Scale is initialized to be average radius of the closest 5 points
     r = np.hypot(xdata - x0, ydata - y0)
     th = np.arctan2(ydata - y0, xdata - x0)
@@ -52,6 +52,11 @@ def init_conic_from_xy(xdata, ydata):
     # Angle is initialized to be the circular mean of angles of those
     # same closest points
     theta0 = np.rad2deg(circmean(th[closest_points]))
+    if DEBUG:
+        print(f"{closest_points=}")
+        print(f"{r[closest_points]=}")
+        print(f"{np.rad2deg(th[closest_points])=}")
+        print(f"{theta0=}")
 
     # Note that theta0 is in degrees, not radians
     # Eccentricity is initialized to be 1.0, which is a parabola

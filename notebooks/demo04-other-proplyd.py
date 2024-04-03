@@ -50,10 +50,10 @@ saveprefix = "demo04"
 
 # ### Read arc points in celestial coordinates from DS9-format regions file
 #
-# This function is copied over from the circle-fit project with some updates to reflect more recent API changes
+# This function is copied over from the circle-fit project with some updates to reflect more recent API changes. Note that older versions of the regions library require `marker_string="point"`
 
 
-def read_arc_data_ds9(filename, pt_star="o", pt_arc="x"):
+def read_arc_data_ds9(filename, pt_star="o", pt_arc="x", marker_string="marker"):
     """
     Return the sky coordinates of a star (single point of type
     `pt_star`) and arc (multiple points of type: `pt_arc`), which are
@@ -62,10 +62,10 @@ def read_arc_data_ds9(filename, pt_star="o", pt_arc="x"):
     regions = rg.Regions.read(filename)
 
     try:
-        (star,) = [x for x in regions if x.visual["point"] == pt_star]
+        (star,) = [x for x in regions if x.visual[marker_string] == pt_star]
     except IndexError:
         sys.exit("One and only one 'circle' region is required")
-    points = [x for x in regions if x.visual["point"] == pt_arc]
+    points = [x for x in regions if x.visual[marker_string] == pt_arc]
     return star, points
 
 
