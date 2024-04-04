@@ -73,7 +73,7 @@ for theta in np.arange(6) * 60:
     xpts, ypts = rotate(xpts0, ypts0, theta)
     ax.scatter(xpts, ypts)
 ax.set_aspect("equal")
-...
+...;
 
 fig.savefig(figpath / f"{saveprefix}-points.pdf", bbox_inches="tight")
 
@@ -124,7 +124,7 @@ ax.set(
     xlim=[xpts.min() - margin, xpts.max() + margin],
     ylim=[ypts.min() - margin, ypts.max() + margin],
 )
-...
+...;
 # -
 # ## Do the fitting for a range of rotations of the origina data
 #
@@ -184,7 +184,8 @@ for theta, result in results.items():
     ax.plot(beste_xy.x_pts, beste_xy.y_pts)
     ax.scatter(result["x"], result["y"], marker=".", color="k")
     ax.set_aspect("equal")
-...
+...;
+
 fig.savefig(figpath / f"{saveprefix}-best-fits.pdf", bbox_inches="tight")
 
 # ## Execution time for notebook

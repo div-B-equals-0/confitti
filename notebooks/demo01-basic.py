@@ -53,7 +53,7 @@ xpts *= 3
 fig, ax = plt.subplots()
 ax.scatter(xpts, ypts)
 ax.set_aspect("equal")
-...
+...;
 
 fig.savefig(figpath / f"{saveprefix}-points.pdf", bbox_inches="tight")
 
@@ -117,7 +117,7 @@ ax.set(
     xlabel="data point #",
     ylabel=r"residual: $r - e \times d$",
 )
-...
+...;
 
 fig.savefig(figpath / f"{saveprefix}-residuals.pdf", bbox_inches="tight")
 
@@ -171,7 +171,7 @@ ax.set(
     xlim=[xpts.min() - margin, xpts.max() + margin],
     ylim=[ypts.min() - margin, ypts.max() + margin],
 )
-...
+...;
 # -
 fig.savefig(figpath / f"{saveprefix}-best-fits.pdf", bbox_inches="tight")
 

@@ -170,7 +170,7 @@ axes[1].set(
     xlim=[xpts.min() - margin, xpts.max() + margin],
     ylim=[ypts.min() - margin, ypts.max() + margin],
 )
-...
+...;
 
 fig.savefig(figpath / f"{saveprefix}-emcee-samples-p.pdf", bbox_inches="tight")
 
@@ -205,7 +205,7 @@ axes[1].set(
     xlim=[xpts.min() - margin, xpts.max() + margin],
     ylim=[ypts.min() - margin, ypts.max() + margin],
 )
-...
+...;
 # -
 
 
@@ -300,7 +300,7 @@ axes[1].set(
     xlim=[xpts.min() - margin, xpts.max() + margin],
     ylim=[ypts.min() - margin, ypts.max() + margin],
 )
-...
+...;
 # -
 
 fig.savefig(figpath / f"{saveprefix}-emcee-samples-p-improved.pdf", bbox_inches="tight")
@@ -397,7 +397,7 @@ fig.colorbar(
     orientation="horizontal",
     label="eccentricity",
 )
-...
+...;
 # -
 
 fig.savefig(figpath / f"{saveprefix}-emcee-samples-e-improved.pdf", bbox_inches="tight")

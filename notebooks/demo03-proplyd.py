@@ -97,7 +97,7 @@ xpts, ypts = SkyCoord([point.center for point in points]).to_pixel(w)
 fig, ax = plt.subplots()
 ax.scatter(xpts, ypts)
 ax.set_aspect("equal")
-...
+...;
 
 # ## Fit the arc
 
@@ -128,7 +128,7 @@ ax.set(
     xlim=[xpts.min() - margin, xpts.max() + margin],
     ylim=[ypts.min() - margin, ypts.max() + margin],
 )
-...
+...;
 # -
 
 fig.savefig(figpath / f"{saveprefix}-best-fits.pdf", bbox_inches="tight")
