@@ -3,7 +3,7 @@ Fit conic sections (ellipse, parabola, hyperbola) to a set of points
 
 See the [presentation](https://github.com/dawg-at-irya/conics-talk)
 
-[![Talk on conic section fitting](https://github.com/dawg-at-irya/conics-talk/slides/001.jpeg)](https://github.com/dawg-at-irya/conics-talk)
+[![Talk on conic section fitting](https://github.com/dawg-at-irya/conics-talk/blob/main/slides/001.jpeg?raw=true)](https://github.com/dawg-at-irya/conics-talk#individual-slides)
 
 ## Installation
 ```bash
