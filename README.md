@@ -11,12 +11,12 @@ pip install confitti
 ```
 or
 ```bash
-uv install confitti
+uv pip install confitti
 ```
 will install the package plus the required dependencies (numpy, scipy, lmfit). 
 
 Optional dependencies, which are used in the example notebooks, 
-may be pip-installed or uv-installed separately: 
+may be pip-installed separately: 
   * emcee for MCMC sampling
   * matplotlib, seaborn, and corner for plotting
   * astropy and regions for dealing with celestial coordinates
