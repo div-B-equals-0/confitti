@@ -1,7 +1,9 @@
 # 🎊 Confitti 🎊 - for Conics Fitting
 Fit conic sections (ellipse, parabola, hyperbola) to a set of points
 
-This is the successor project to [circle-fit](https://github.com/div-B-equals-0/circle-fit)
+See the [presentation](https://github.com/dawg-at-irya/conics-talk)
+
+[![Talk on conic section fitting](https://github.com/dawg-at-irya/conics-talk/slides/001.jpeg)](https://github.com/dawg-at-irya/conics-talk)
 
 ## Installation
 ```bash
@@ -26,4 +28,6 @@ See the example jupyter notebooks in the [notebooks](./notebooks) directory. For
   * [demo03-proplyd.ipynb](./notebooks/demo03-proplyd.ipynb) is an example application to real astronomical data (HST image of a bow shock in the Orion Nebula)
   
 ## Prior art
+This is the successor project to [circle-fit](https://github.com/div-B-equals-0/circle-fit)
+
 Some of the literature on the topic of fitting conic sections to points is described [here](./docs/prior-art.org). 
