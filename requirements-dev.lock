@@ -8,18 +8,170 @@
 #   with-sources: false
 
 -e file:.
+appnope==0.1.4
+    # via ipykernel
 asteval==0.9.32
     # via lmfit
+astropy==6.0.1
+    # via regions
+astropy-iers-data==0.2024.4.1.0.33.14
+    # via astropy
+asttokens==2.4.1
+    # via stack-data
+attrs==23.2.0
+    # via jsonschema
+    # via referencing
+comm==0.2.2
+    # via ipykernel
+contourpy==1.2.1
+    # via matplotlib
+corner==2.2.2
+cycler==0.12.1
+    # via matplotlib
+debugpy==1.8.1
+    # via ipykernel
+decorator==5.1.1
+    # via ipython
+emcee==3.1.4
+    # via confitti
+execnet==2.0.2
+    # via pytest-xdist
+executing==2.0.1
+    # via stack-data
+fastjsonschema==2.19.1
+    # via nbformat
+fonttools==4.50.0
+    # via matplotlib
 future==1.0.0
     # via uncertainties
+iniconfig==2.0.0
+    # via pytest
+ipykernel==6.29.4
+    # via nbmake
+ipython==8.23.0
+    # via ipykernel
+jedi==0.19.1
+    # via ipython
+jsonschema==4.21.1
+    # via nbformat
+jsonschema-specifications==2023.12.1
+    # via jsonschema
+jupyter-client==8.6.1
+    # via ipykernel
+    # via nbclient
+jupyter-core==5.7.2
+    # via ipykernel
+    # via jupyter-client
+    # via nbformat
+kiwisolver==1.4.5
+    # via matplotlib
 lmfit==1.2.2
     # via confitti
+matplotlib==3.8.3
+    # via corner
+    # via seaborn
+matplotlib-inline==0.1.6
+    # via ipykernel
+    # via ipython
+nbclient==0.6.8
+    # via nbmake
+nbformat==5.10.3
+    # via nbclient
+    # via nbmake
+nbmake==1.5.3
+nest-asyncio==1.6.0
+    # via ipykernel
+    # via nbclient
 numpy==1.26.4
+    # via astropy
     # via confitti
+    # via contourpy
+    # via emcee
     # via lmfit
+    # via matplotlib
+    # via pandas
+    # via pyerfa
+    # via regions
     # via scipy
+    # via seaborn
+packaging==24.0
+    # via astropy
+    # via ipykernel
+    # via matplotlib
+    # via pytest
+pandas==2.2.1
+    # via seaborn
+parso==0.8.3
+    # via jedi
+pexpect==4.9.0
+    # via ipython
+pillow==10.3.0
+    # via matplotlib
+platformdirs==4.2.0
+    # via jupyter-core
+pluggy==1.4.0
+    # via pytest
+prompt-toolkit==3.0.43
+    # via ipython
+psutil==5.9.8
+    # via ipykernel
+ptyprocess==0.7.0
+    # via pexpect
+pure-eval==0.2.2
+    # via stack-data
+pyerfa==2.0.1.1
+    # via astropy
+pygments==2.17.2
+    # via ipython
+    # via nbmake
+pyparsing==3.1.2
+    # via matplotlib
+pytest==8.1.1
+    # via nbmake
+    # via pytest-xdist
+pytest-xdist==3.5.0
+python-dateutil==2.9.0.post0
+    # via jupyter-client
+    # via matplotlib
+    # via pandas
+pytz==2024.1
+    # via pandas
+pyyaml==6.0.1
+    # via astropy
+pyzmq==25.1.2
+    # via ipykernel
+    # via jupyter-client
+referencing==0.34.0
+    # via jsonschema
+    # via jsonschema-specifications
+regions==0.8
+rpds-py==0.18.0
+    # via jsonschema
+    # via referencing
 scipy==1.13.0
     # via confitti
     # via lmfit
+seaborn==0.13.2
+six==1.16.0
+    # via asttokens
+    # via python-dateutil
+stack-data==0.6.3
+    # via ipython
+tornado==6.4
+    # via ipykernel
+    # via jupyter-client
+traitlets==5.14.2
+    # via comm
+    # via ipykernel
+    # via ipython
+    # via jupyter-client
+    # via jupyter-core
+    # via matplotlib-inline
+    # via nbclient
+    # via nbformat
+tzdata==2024.1
+    # via pandas
 uncertainties==3.1.7
     # via lmfit
+wcwidth==0.2.13
+    # via prompt-toolkit

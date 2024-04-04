@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: light
 #       format_version: '1.5'
-#       jupytext_version: 1.15.2
+#       jupytext_version: 1.16.1
 #   kernelspec:
 #     display_name: Python 3 (ipykernel)
 #     language: python
@@ -15,9 +15,9 @@
 
 # # Fit conic to real data from proplyd arcs (second proplyd)
 #
-# We will use the same data that we used in Tarango Yong & Henney (2018) to demonstrate the circle-fit algorithm. This started off identical to demo04, except for the data file. But it quickly takes a very different turn, due to the best fit being an lowish-eccentricity ellipse rather than a hyperbola. 
+# We will use the same data that we used in Tarango Yong & Henney (2018) to demonstrate the circle-fit algorithm. This started off identical to demo04, except for the data file. But it quickly takes a very different turn, due to the best fit being an lowish-eccentricity ellipse rather than a hyperbola.
 #
-# It turns out that the residual function prefers to fit the data points to the "back" side of the ellipse (the side away from the focus). This means that the orientation of the ellipse axis gets flipped. 
+# It turns out that the residual function prefers to fit the data points to the "back" side of the ellipse (the side away from the focus). This means that the orientation of the ellipse axis gets flipped.
 #
 #
 
@@ -26,11 +26,9 @@
 import time
 
 start_time = time.time()
-import sys
 from pathlib import Path
 
-sys.path.append("../src")
-import confit
+import confitti
 import numpy as np
 import lmfit
 from matplotlib import pyplot as plt
@@ -94,20 +92,22 @@ ax.scatter(xpts, ypts)
 ax.set_aspect("equal")
 ...
 
-confit.init_conic_from_xy(xpts, ypts)
+confitti.init_conic_from_xy(xpts, ypts)
 
 # ## Fit the arc
 
-result_p = confit.fit_conic_to_xy(xpts, ypts, only_parabola=True)
-result_e = confit.fit_conic_to_xy(xpts, ypts, only_parabola=False, restrict_xy=True, restrict_theta=False)
+result_p = confitti.fit_conic_to_xy(xpts, ypts, only_parabola=True)
+result_e = confitti.fit_conic_to_xy(
+    xpts, ypts, only_parabola=False, restrict_xy=True, restrict_theta=False
+)
 
 result_p
 
 result_e
 
-beste_xy = confit.XYconic(**result_e.params.valuesdict())
+beste_xy = confitti.XYconic(**result_e.params.valuesdict())
 print(beste_xy)
-bestp_xy = confit.XYconic(**result_p.params.valuesdict())
+bestp_xy = confitti.XYconic(**result_p.params.valuesdict())
 print(bestp_xy)
 
 # +
@@ -127,7 +127,7 @@ ax.set(
     xlim=[xpts.min() - margin, xpts.max() + margin],
     ylim=[ypts.min() - margin, ypts.max() + margin],
 )
-...;
+...
 # -
 
 fig.savefig(figpath / f"{saveprefix}-best-fits.pdf", bbox_inches="tight")
@@ -140,7 +140,7 @@ ax.set(
     xlabel="data point #",
     ylabel=r"residual: $r - e \times d$",
 )
-...;
+...
 
 
 fig.savefig(figpath / f"{saveprefix}-residuals.pdf", bbox_inches="tight")
@@ -162,7 +162,11 @@ emcee_params = result_e.params.copy()
 emcee_params.add("__lnsigma", value=np.log(0.1), min=np.log(0.001), max=np.log(1.0))
 
 result_emcee = lmfit.minimize(
-    confit.residual, args=(xpts, ypts), method="emcee", params=emcee_params, **emcee_kws
+    confitti.residual,
+    args=(xpts, ypts),
+    method="emcee",
+    params=emcee_params,
+    **emcee_kws,
 )
 
 result_emcee
@@ -184,9 +188,9 @@ emcee_plot = corner.corner(
 
 emcee_plot.savefig(figpath / f"{saveprefix}-corner.pdf", bbox_inches="tight")
 
-best_xy = confit.XYconic(**result_e.params.valuesdict())
+best_xy = confitti.XYconic(**result_e.params.valuesdict())
 chain_pars = result_emcee.flatchain.drop(columns="__lnsigma").to_dict(orient="records")
-chain_xy = [confit.XYconic(**row) for row in chain_pars[7::200]]
+chain_xy = [confitti.XYconic(**row) for row in chain_pars[7::200]]
 
 len(chain_xy)
 
@@ -195,7 +199,7 @@ import matplotlib as mpl
 cmap = mpl.cm.rainbow
 
 eparam = result_emcee.params["eccentricity"]
-#emin, emax = eparam.value - 2 * eparam.stderr, eparam.value + 2 * eparam.stderr
+# emin, emax = eparam.value - 2 * eparam.stderr, eparam.value + 2 * eparam.stderr
 emin, emax = np.percentile(result_emcee.flatchain["eccentricity"], [5, 95])
 norm = mpl.colors.Normalize(vmin=emin, vmax=emax)
 norm(1.0)

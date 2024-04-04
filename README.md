@@ -1,5 +1,4 @@
-
-# confit
+# 🎊 Confitti 🎊 - for Conics Fitting
 Fit conic sections (ellipse, parabola, hyperbola) to a set of points
 
 This is the successor project to [circle-fit](https://github.com/div-B-equals-0/circle-fit)

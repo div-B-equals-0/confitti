@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: light
 #       format_version: '1.5'
-#       jupytext_version: 1.15.2
+#       jupytext_version: 1.16.1
 #   kernelspec:
 #     display_name: Python 3 (ipykernel)
 #     language: python
@@ -22,11 +22,9 @@
 import time
 
 start_time = time.time()
-import sys
 from pathlib import Path
 
-sys.path.append("../src")
-import confit
+import confitti
 import numpy as np
 import lmfit
 from matplotlib import pyplot as plt
@@ -50,8 +48,8 @@ xpts *= 3
 #
 # Fit of parabola and a general conic, as in demo01
 
-result_p = confit.fit_conic_to_xy(xpts, ypts, only_parabola=True)
-result_e = confit.fit_conic_to_xy(xpts, ypts, only_parabola=False)
+result_p = confitti.fit_conic_to_xy(xpts, ypts, only_parabola=True)
+result_e = confitti.fit_conic_to_xy(xpts, ypts, only_parabola=False)
 
 # First look at the general curve.
 
@@ -76,7 +74,11 @@ emcee_kws = dict(
 emcee_params = result_e.params.copy()
 
 result_emcee = lmfit.minimize(
-    confit.residual, args=(xpts, ypts), method="emcee", params=emcee_params, **emcee_kws
+    confitti.residual,
+    args=(xpts, ypts),
+    method="emcee",
+    params=emcee_params,
+    **emcee_kws,
 )
 
 result_emcee
@@ -99,7 +101,7 @@ emcee_plot = corner.corner(
 emcee_plot.savefig(figpath / f"{saveprefix}-corner-e.pdf", bbox_inches="tight")
 
 result_emcee_p = lmfit.minimize(
-    confit.residual,
+    confitti.residual,
     args=(xpts, ypts),
     method="emcee",
     params=result_p.params.copy(),
@@ -127,7 +129,7 @@ emcee_plot_p.savefig(figpath / f"{saveprefix}-corner-p.pdf", bbox_inches="tight"
 
 # ## Plotting the best fit onto the data
 
-best_xy = confit.XYconic(**result_p.params.valuesdict())
+best_xy = confitti.XYconic(**result_p.params.valuesdict())
 print(best_xy)
 
 # Get a list of dicts with the conic parameters from the MC chain
@@ -139,7 +141,7 @@ len(chain_pars)
 
 # Take every 10th row so we have 350 samples in total and get the xy curves for them all
 
-chain_xy = [confit.XYconic(**row, eccentricity=1.0) for row in chain_pars[3::10]]
+chain_xy = [confitti.XYconic(**row, eccentricity=1.0) for row in chain_pars[3::10]]
 
 fig, axes = plt.subplots(1, 2, figsize=(12, 8))
 for ax in axes:
@@ -172,9 +174,9 @@ axes[1].set(
 
 fig.savefig(figpath / f"{saveprefix}-emcee-samples-p.pdf", bbox_inches="tight")
 
-best_xy = confit.XYconic(**result_e.params.valuesdict())
+best_xy = confitti.XYconic(**result_e.params.valuesdict())
 chain_pars = result_emcee.flatchain.drop(columns="__lnsigma").to_dict(orient="records")
-chain_xy = [confit.XYconic(**row) for row in chain_pars[1::10]]
+chain_xy = [confitti.XYconic(**row) for row in chain_pars[1::10]]
 
 # +
 fig, axes = plt.subplots(1, 2, figsize=(12, 8))
@@ -229,7 +231,7 @@ long_emcee_kws = emcee_kws | dict(steps=5000, burn=1000)
 long_emcee_kws
 
 result_emcee_pp = lmfit.minimize(
-    confit.residual,
+    confitti.residual,
     args=(xpts, ypts),
     method="emcee",
     params=new_params,
@@ -248,7 +250,9 @@ emcee_plot_p = corner.corner(
     bins=50,
 )
 
-emcee_plot_p.savefig(figpath / f"{saveprefix}-corner-p-improved.pdf", bbox_inches="tight")
+emcee_plot_p.savefig(
+    figpath / f"{saveprefix}-corner-p-improved.pdf", bbox_inches="tight"
+)
 
 # Finally, we have a nice-looking corner plot with elliptical contours!
 
@@ -263,11 +267,11 @@ len(result_emcee_pp.flatchain)
 
 # Now that we have a longer chain, we have to be careful not to take too many samples for the plot, so take every 100th, which should give 200 samples
 
-best_xy = confit.XYconic(**result_p.params.valuesdict())
+best_xy = confitti.XYconic(**result_p.params.valuesdict())
 chain_pars = result_emcee_pp.flatchain.drop(columns="__lnsigma").to_dict(
     orient="records"
 )
-chain_xy = [confit.XYconic(**row, eccentricity=1.0) for row in chain_pars[1::100]]
+chain_xy = [confitti.XYconic(**row, eccentricity=1.0) for row in chain_pars[1::100]]
 
 # +
 fig, axes = plt.subplots(1, 2, figsize=(12, 8))
@@ -314,7 +318,7 @@ new_params.add("__lnsigma", value=np.log(0.1), min=np.log(0.001), max=-0.8)
 new_params
 
 result_emcee_ee = lmfit.minimize(
-    confit.residual,
+    confitti.residual,
     args=(xpts, ypts),
     method="emcee",
     params=new_params,
@@ -331,15 +335,17 @@ emcee_plot_ee = corner.corner(
     bins=30,
 )
 
-emcee_plot_ee.savefig(figpath / f"{saveprefix}-corner-e-improved.pdf", bbox_inches="tight")
+emcee_plot_ee.savefig(
+    figpath / f"{saveprefix}-corner-e-improved.pdf", bbox_inches="tight"
+)
 
 # So this is much better than before, although the contours have some pretty weird shapes. We can see from the bottom row of panels that all the "interesting" behavior is combined to the higher values of `__lnsigma`, so if we could have an independent restriction of the data point uncertainties, then we could eliminate much of the nonsense.
 
-best_xy = confit.XYconic(**result_e.params.valuesdict())
+best_xy = confitti.XYconic(**result_e.params.valuesdict())
 chain_pars = result_emcee_ee.flatchain.drop(columns="__lnsigma").to_dict(
     orient="records"
 )
-chain_xy = [confit.XYconic(**row) for row in chain_pars[7::50]]
+chain_xy = [confitti.XYconic(**row) for row in chain_pars[7::50]]
 
 # Choose a color map for distinguishing the eccentricity
 
@@ -391,7 +397,7 @@ fig.colorbar(
     orientation="horizontal",
     label="eccentricity",
 )
-...;
+...
 # -
 
 fig.savefig(figpath / f"{saveprefix}-emcee-samples-e-improved.pdf", bbox_inches="tight")

@@ -62,13 +62,31 @@
 
 * Testing
 
-** Testing my library code with ~pytest~
+** TODO Testing my library code with ~pytest~
 
 ** Testing a set of notebooks with ~pytest~ and ~nbmake~
 - See [[https://semaphoreci.com/blog/test-jupyter-notebooks-with-pytest-and-nbmake]["How to Test Jupyter Notebooks with Pytest and Nbmake"]] by Alex Remedios
 
 *** Just testing that they run without modifying the .ipynb file
-The default behavior of ~nbmake~ is read only. It checks that the notebooks run, but does not overwrite them. 
+- The default behavior of ~nbmake~ is read only. It checks that the notebooks run, but does not overwrite them.
+- [2024-04-03 Wed] I am using this to test my migration to a rye-based setup
+  - I have added nbmake as a dev dependency ~rye add nbmake --dev~
+  - I will first test it by running pytest by hand from rye:
+    #+begin_src sh :dir ../notebooks :results output verbatim
+      rye run pytest --nbmake demo01-basic.ipynb
+    #+end_src
+  - This failed, which is great since it pointed to a problem with the library structure
+  - I needed to add ~from .confitti import *~ to ~__init__.py~ in the package directory so as to hoist up all the functions so they are available at the top level
+  - I converted all the notebooks and now the tests all passed
+    - I had to add emcee as a dependency, since lmfit does not pull it in automatically
+    - I made it a normal dependency rather than a dev dependency, since in the future there may be core functionality that needs it
+
+*** Overwriting the notebook files with the test output
+- [2024-04-03 Wed] I am doing this after having migrated the notebooks to use the editable install of the package
+- I will run the tests again, but this time with the ~--overwrite~ flag, and also taking advantage of parallel execution with ~-n=auto~ (using pydist-xdist ~rye add pytest-xdist --dev~)
+  #+begin_src sh :dir ../notebooks :results output verbatim
+    rye run pytest --nbmake --overwrite -n=auto demo*.ipynb
+  #+end_src
 
 ** Testing functions within a notebook with ~ipytest~
 - See [[https://medium.com/@mefengl/using-pytest-in-jupyter-notebooks-a-practical-guide-1ba8e02af288]["Using Pytest in Jupyter Notebooks: A Practical Guide"]] by Mefeng Lin
@@ -83,3 +101,11 @@ The default behavior of ~nbmake~ is read only. It checks that the notebooks run,
 - The org files are great for use within emacs, but github doesn't render them nicely
   - In particular, it does not support mathjax latex rendering
 - I could maybe export to markdown, but at that point I might as well export to html
+* Formatting and linting
+** TODO How to preserve the semicolons in notebooks
+- I like to use semicolons to suppress output in notebooks, but black and other formatters remove them
+- There must be some configuration option to preserve them
+- At the moment, I see this due to the emacs save hook that runs black on the file
+- But in the future I want to migrate to ruff, so I want a solution for that too
+- Ideally, it would be a per-folder configuration so that I can have different behavior in the notebooks folder
+

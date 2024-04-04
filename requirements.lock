@@ -10,12 +10,15 @@
 -e file:.
 asteval==0.9.32
     # via lmfit
+emcee==3.1.4
+    # via confitti
 future==1.0.0
     # via uncertainties
 lmfit==1.2.2
     # via confitti
 numpy==1.26.4
     # via confitti
+    # via emcee
     # via lmfit
     # via scipy
 scipy==1.13.0

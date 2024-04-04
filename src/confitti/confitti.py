@@ -110,7 +110,7 @@ def fit_conic_to_xy(
 
 
 class XYconic:
-    """Cartesian corrdinate curve of conic section."""
+    """Cartesian coordinate curve of conic section."""
 
     def __init__(self, x0, y0, r0, theta0, eccentricity):
         self.x0 = x0
