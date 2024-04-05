@@ -43,22 +43,85 @@
   #+begin_example
   [jupytext] Reading demo01-basic.py in format py
   [jupytext] Loading demo01-basic.ipynb
-  [jupytext] Updating the timestamp of demo01-basic.py
+  [jupytext] Updating demo01-basic.py with this change:
+  @@ -6,7 +6,7 @@
+   #       extension: .py
+   #       format_name: light
+   #       format_version: '1.5'
+  -#       jupytext_version: 1.15.2
+  +#       jupytext_version: 1.16.1
+   #   kernelspec:
+   #     display_name: Python 3 (ipykernel)
+   #     language: python
   [jupytext] Reading demo02-emcee.py in format py
   [jupytext] Loading demo02-emcee.ipynb
-  [jupytext] Updating the timestamp of demo02-emcee.py
+  [jupytext] Updating demo02-emcee.py with this change:
+  @@ -6,7 +6,7 @@
+   #       extension: .py
+   #       format_name: light
+   #       format_version: '1.5'
+  -#       jupytext_version: 1.15.2
+  +#       jupytext_version: 1.16.1
+   #   kernelspec:
+   #     display_name: Python 3 (ipykernel)
+   #     language: python
   [jupytext] Reading demo03-proplyd.py in format py
   [jupytext] Loading demo03-proplyd.ipynb
-  [jupytext] Updating the timestamp of demo03-proplyd.py
+  [jupytext] Updating demo03-proplyd.py with this change:
+  @@ -6,7 +6,7 @@
+   #       extension: .py
+   #       format_name: light
+   #       format_version: '1.5'
+  -#       jupytext_version: 1.15.2
+  +#       jupytext_version: 1.16.1
+   #   kernelspec:
+   #     display_name: Python 3 (ipykernel)
+   #     language: python
   [jupytext] Reading demo04-other-proplyd.py in format py
-  [jupytext] Updating demo04-other-proplyd.ipynb
-  [jupytext] Updating the timestamp of demo04-other-proplyd.py
+  [jupytext] Loading demo04-other-proplyd.ipynb
+  [jupytext] Updating demo04-other-proplyd.py with this change:
+  @@ -6,7 +6,7 @@
+   #       extension: .py
+   #       format_name: light
+   #       format_version: '1.5'
+  -#       jupytext_version: 1.15.2
+  +#       jupytext_version: 1.16.1
+   #   kernelspec:
+   #     display_name: Python 3 (ipykernel)
+   #     language: python
+  [jupytext] Reading demo05-quadrants.py in format py
+  [jupytext] Loading demo05-quadrants.ipynb
+  [jupytext] Updating demo05-quadrants.py with this change:
+  @@ -6,7 +6,7 @@
+   #       extension: .py
+   #       format_name: light
+   #       format_version: '1.5'
+  -#       jupytext_version: 1.15.2
+  +#       jupytext_version: 1.16.1
+   #   kernelspec:
+   #     display_name: Python 3 (ipykernel)
+   #     language: python
 
-  Last run: Mon Feb 26 22:20:19 CST 2024
+  Last run: Fri Apr  5 10:02:33 CST 2024
   #+end_example
   where the ~--show-changes~ flag displays a diff of what has changed and the ~--update~ flag preserves the output cells in the notebook, even if it is being updated from the python file
 - It is not necessary to use this after editing the ~.ipynb~ file since the ~.py~ file will be updated automatically.
 - Do I want to automate this?
+- And do I want to be running it through rye?
+  - Seems unnecessary. On the other hand, I am getting inconsistent versions according to whether my conda environment is active or not.
+#+begin_src sh :results output verbatim
+  which jupytext
+#+end_src
+
+#+RESULTS:
+: /Users/will/.local/bin/jupytext
+
+
+#+RESULTS with no env active:
+: /Users/will/.local/bin/jupytext
+
+#+RESULTS with conda env active:
+: /Users/will/miniconda3/envs/py39/bin/jupytext
 
 * Testing
 
