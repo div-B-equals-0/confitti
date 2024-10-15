@@ -108,7 +108,7 @@
 - It is not necessary to use this after editing the ~.ipynb~ file since the ~.py~ file will be updated automatically.
 - Do I want to automate this?
 - And do I want to be running it through rye?
-  - Seems unnecessary. On the other hand, I am getting inconsistent versions according to whether my conda environment is active or not.
+  - Seems unnecessary. On the other hand, I am getting inconsistent versions according to whether my conda environment is active or not, which can cause unnecessary churn in the notebook files since the version number is stored in the metadata.
 #+begin_src sh :results output verbatim
   which jupytext
 #+end_src
@@ -159,6 +159,8 @@
 * Packaging
 ** What sort of system should I use?
 - I have previously tried poetry, but there seem to be a lot more options these days
+- Looks like I am currently [2024-10-15 Tue] using rye, but may update to uv in the future
+** How to publish a new version
 * Documentation
 ** TODO Building a prettier version of docs for github
 - The org files are great for use within emacs, but github doesn't render them nicely

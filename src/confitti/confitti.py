@@ -79,13 +79,20 @@ def fit_conic_to_xy(
     only_parabola=True,
     restrict_xy=False,
     restrict_theta=False,
+    allow_negative_theta=True,
 ):
     """Fit a conic section curve to discrete (x, y) data points."""
     # create a set of Parameters with initial values
     params = lmfit.create_params(**init_conic_from_xy(xdata, ydata))
     # Set limits on parameters
     params["r0"].set(min=0.0)
-    params["theta0"].set(min=0.0, max=360.0)
+    if allow_negative_theta:
+        # To prevent problems when the best fit angle is close to
+        # zero, we include a "fifth quadrant" by allowing negative
+        # angles
+        params["theta0"].set(min=-90.0, max=360.0)
+    else:
+        params["theta0"].set(min=0.0, max=360.0)
     params["eccentricity"].set(min=0.0)
     if only_parabola:
         params["eccentricity"].set(vary=False)

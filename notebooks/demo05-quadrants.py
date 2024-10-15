@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: light
 #       format_version: '1.5'
-#       jupytext_version: 1.16.1
+#       jupytext_version: 1.16.4
 #   kernelspec:
 #     display_name: Python 3 (ipykernel)
 #     language: python
@@ -131,10 +131,10 @@ ax.set(
 # We make a dictionary with keys of the rotation angles that holds the data points and the two fits (parabola and general conic)
 
 results = {}
-for theta in np.arange(6) * 60:
+for theta in (-3.0 + np.arange(12) * 30):
     xpts, ypts = rotate(xpts0, ypts0, theta)
-    result_p = confitti.fit_conic_to_xy(xpts, ypts, only_parabola=True)
-    result_e = confitti.fit_conic_to_xy(xpts, ypts, only_parabola=False)
+    result_p = confitti.fit_conic_to_xy(xpts, ypts, allow_negative_theta=True, only_parabola=True)
+    result_e = confitti.fit_conic_to_xy(xpts, ypts, allow_negative_theta=True, only_parabola=False)
     results[theta] = {
         "x": xpts,
         "y": ypts,
@@ -142,10 +142,12 @@ for theta in np.arange(6) * 60:
         "efit": result_e,
     }
 
+# Note that the argument `allow_negative_theta` is true by default. It is recommended that this option should always be left turned on. It is just included here for testing purposes. If it is set to false, then one of the fits fails because the angle gets trapped at 0.0. 
+
 #
 # Look at the residuals:
 
-[result["pfit"].residual for result in results.values()]
+[result["efit"].residual for result in results.values()]
 
 # Those all look the same, which is good.
 #
@@ -157,12 +159,12 @@ df = pd.DataFrame(
     {"angle": angle, **result["efit"].params.valuesdict()}
     for angle, result in results.items()
 )
-df
+df.style.format(precision=3)
 
 # Now look at the fitted angle minus the data rotation angle
 
 fig, ax = plt.subplots()
-ax.plot(df["angle"], (df["theta0"] - df["angle"]) % 360)
+ax.scatter(df["angle"], (df["theta0"] - df["angle"]) % 360)
 ax.set(ylim=[0, 180])
 
 # This is constant, which is what we hoped. This show that the fit is the same for all the different data rotation angle.
@@ -183,7 +185,9 @@ for theta, result in results.items():
     beste_xy = confitti.XYconic(**result["efit"].params.valuesdict())
     ax.plot(beste_xy.x_pts, beste_xy.y_pts)
     ax.scatter(result["x"], result["y"], marker=".", color="k")
-    ax.set_aspect("equal")
+ax.set_aspect("equal")
+_limit = 100
+ax.set(xlim=[-_limit, _limit], ylim=[-_limit, _limit])
 ...;
 
 fig.savefig(figpath / f"{saveprefix}-best-fits.pdf", bbox_inches="tight")

@@ -28,6 +28,8 @@ dev-dependencies = [
     "corner>=2.2.2",
     "nbmake>=1.5.3",
     "pytest-xdist>=3.5.0",
+    "jupyter>=1.1.1",
+    "jupytext>=1.16.4",
 ]
 
 [tool.hatch.metadata]
