@@ -174,12 +174,18 @@ class ConicFitResult:
 
     """
 
-    def __init__(self, result: lmfit.minimizer.MinimizerResult):
-        self.lmfit_result = result
-        # Make sure everything is is a standard float
-        self.params = {k: float(v.value) for (k, v) in result.params.items()}
-        self.uparams = {k: float(v.stderr) for (k, v) in result.params.items()}
-        self.xy = XYconic(**self.params)
+    def __init__(self, result: lmfit.minimizer.MinimizerResult=None):
+        if result is None:
+            # Allow initialization with no result with a view to
+            # filling things in later (see from_dict() method for instance)
+            self.params = {}
+            self.uparams = {}
+            self.xy = None
+        else:
+            # Make sure everything is is a standard float so that it will serialize nicely
+            self.params = {k: float(v.value) for (k, v) in result.params.items()}
+            self.uparams = {k: float(v.stderr) for (k, v) in result.params.items()}
+            self.xy = XYconic(**self.params)
 
     def __repr__(self):
         return f"ConicFitResult({self.params})"
@@ -190,7 +196,7 @@ class ConicFitResult:
     def to_dict(self) -> dict:
         """Return a dictionary representation of the object.
         This may be used to serialize the object to JSON or YAML.
-        Note, however, that the lmfit_result attribute is not included.
+        The XYconic object is omitted since it can be revreated from the params.
         """
         return {
             "params": self.params,
@@ -201,7 +207,7 @@ class ConicFitResult:
     def from_dict(cls, d: dict):
         """Create a ConicFitResult object from a dictionary.
         This may be used to deserialize the object from JSON or YAML.
-        Note, however, that the lmfit_result attribute is not included.
+        The XYconic object is recreated from the params.
         """
         rslt = cls()
         rslt.params = d["params"]

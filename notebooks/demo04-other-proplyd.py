@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: light
 #       format_version: '1.5'
-#       jupytext_version: 1.16.1
+#       jupytext_version: 1.16.4
 #   kernelspec:
 #     display_name: Python 3 (ipykernel)
 #     language: python
@@ -246,6 +246,12 @@ fig.colorbar(
 # -
 
 fig.savefig(figpath / f"{saveprefix}-emcee-samples.pdf", bbox_inches="tight")
+
+# ## Save results
+
+fit_result = confitti.ConicFitResult(result_emcee)
+
+fit_result.write(saveprefix + "-fit-result.yaml")
 
 # ## Execution time for notebook
 
