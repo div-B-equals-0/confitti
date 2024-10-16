@@ -10,21 +10,39 @@
 #   universal: false
 
 -e file:.
+asdf==3.5.0
+    # via confitti
+asdf-standard==1.1.1
+    # via asdf
+    # via asdf-transform-schemas
+asdf-transform-schemas==0.5.0
+    # via asdf
 asteval==0.9.32
     # via lmfit
+attrs==24.2.0
+    # via asdf
 emcee==3.1.4
     # via confitti
 future==1.0.0
     # via uncertainties
+jmespath==1.0.1
+    # via asdf
 lmfit==1.2.2
     # via confitti
 numpy==1.26.4
+    # via asdf
     # via confitti
     # via emcee
     # via lmfit
     # via scipy
+packaging==24.1
+    # via asdf
+pyyaml==6.0.2
+    # via asdf
 scipy==1.13.0
     # via confitti
     # via lmfit
+semantic-version==2.10.0
+    # via asdf
 uncertainties==3.1.7
     # via lmfit

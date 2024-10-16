@@ -1,5 +1,7 @@
 """Fit conic section curves to data."""
 
+import json
+import yaml
 import numpy as np
 import lmfit
 from scipy.stats import circmean
@@ -119,7 +121,7 @@ def fit_conic_to_xy(
 class XYconic:
     """Cartesian coordinate curve of conic section."""
 
-    def __init__(self, x0, y0, r0, theta0, eccentricity):
+    def __init__(self, x0, y0, r0, theta0, eccentricity, **kwargs):
         self.x0 = x0
         self.y0 = y0
         self.r0 = r0
@@ -133,6 +135,9 @@ class XYconic:
             # means going up to the asymptotic angle
             theta_inf = np.pi - np.arctan(np.sqrt(eccentricity**2 - 1))
             theta_pts = np.linspace(-theta_inf, theta_inf, 200)
+
+        if kwargs:
+            self.extra_params = kwargs
 
         r_pts = (
             self.r0
@@ -159,3 +164,66 @@ class XYconic:
             f"scale factor {self.r0}, angle {self.theta0}, and eccentricity "
             f"{self.eccentricity}."
         )
+
+
+class ConicFitResult:
+    """Result of fitting a conic section to XY data points.
+
+    Includes best-fit parameters (params) and uncertainties (uparams),
+    together with the xy curve (xy)
+
+    """
+
+    def __init__(self, result: lmfit.minimizer.MinimizerResult):
+        self.lmfit_result = result
+        # Make sure everything is is a standard float
+        self.params = {k: float(v.value) for (k, v) in result.params.items()}
+        self.uparams = {k: float(v.stderr) for (k, v) in result.params.items()}
+        self.xy = XYconic(**self.params)
+
+    def __repr__(self):
+        return f"ConicFitResult({self.params})"
+
+    def __str__(self):
+        return f"ConicFitResult with {self.params}"
+
+    def to_dict(self) -> dict:
+        """Return a dictionary representation of the object.
+        This may be used to serialize the object to JSON or YAML.
+        Note, however, that the lmfit_result attribute is not included.
+        """
+        return {
+            "params": self.params,
+            "uparams": self.uparams,
+        }
+
+    @classmethod
+    def from_dict(cls, d: dict):
+        """Create a ConicFitResult object from a dictionary.
+        This may be used to deserialize the object from JSON or YAML.
+        Note, however, that the lmfit_result attribute is not included.
+        """
+        rslt = cls()
+        rslt.params = d["params"]
+        rslt.uparams = d["uparams"]
+        rslt.xy = XYconic(**d["params"])
+        rslt.lmfit_result = None
+        return rslt
+ 
+    def write(self, filename: str):
+        """Save the ConicFitResult object to a file in JSON/YAML format."""
+        with open(filename, "w") as f:
+            if filename.lower().endswith(".yaml"):
+                yaml.safe_dump(self.to_dict(), f)
+            else:
+                json.dump(self.to_dict(), f)
+
+    @classmethod
+    def read(cls, filename: str):
+        """Read the ConicFitResult object from a file in JSON format."""
+        with open(filename, "r") as f:
+            if filename.lower().endswith(".yaml"):
+                d = yaml.safe_load(f)
+            else:
+                d = json.load(f)
+        return cls.from_dict(d)

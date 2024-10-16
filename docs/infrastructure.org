@@ -161,6 +161,12 @@
 - I have previously tried poetry, but there seem to be a lot more options these days
 - Looks like I am currently [2024-10-15 Tue] using rye, but may update to uv in the future
 ** How to publish a new version
+- Bump the version number
+- Add to [[file:../CHANGELOG.md]]
+- Add a git tag
+#+begin_src sh
+  rye publish --skip-existing
+#+end_src
 * Documentation
 ** TODO Building a prettier version of docs for github
 - The org files are great for use within emacs, but github doesn't render them nicely
