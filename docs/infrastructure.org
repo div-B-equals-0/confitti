@@ -1,4 +1,3 @@
-
 * Notebooks
 - These will be used for exploration and demonstration of the code, plus producing graphics output
 - Although I do not want to put too much code in them, anything useful should be moved to the library
