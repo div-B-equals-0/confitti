@@ -25,7 +25,10 @@ may be pip-installed separately:
 See the example jupyter notebooks in the [notebooks][] directory. For example, 
   * [demo01-basic.ipynb][] demonstrates basic usage: finding the best-fit parabola (or general conic) to a set of (x, y) points
   * [demo02-emcee.ipynb][] explores uncertainty in the parameters of the best-fit curve by means of mcmc
-  * [demo03-proplyd.ipynb][] is an example application to real astronomical data (HST image of a bow shock in the Orion Nebula)
+  * [demo03-proplyd.ipynb][] is an example application to real astronomical data (HST image of a bow shock in the Orion Nebula). This also shows how to save the best-fit parameters to a file.
+  * [demo04-other-proplyd.ipynb][] is a second example application to a different bow shock, which turns out very differently because the best-fit arc is an ellipse, rather than a hyperbola
+  * [demo05-quadrants.ipynb][] tests that the code can handle axis orientations in all four quadrants and close to the wrap angle of 360 degrees
+  * [demo06-read-save-files.ipynb][] demonstrates how to read in the multiple saved files from previous fits. 
   
 ## Prior art
 This is the successor project to [circle-fit](https://github.com/div-B-equals-0/circle-fit)
@@ -36,6 +39,9 @@ Some of the literature on the topic of fitting conic sections to points is descr
 [demo01-basic.ipynb]: https://github.com/div-B-equals-0/confitti/tree/main/notebooks/demo01-basic.ipynb
 [demo02-emcee.ipynb]: https://github.com/div-B-equals-0/confitti/tree/main/notebooks/demo02-emcee.ipynb
 [demo03-proplyd.ipynb]: https://github.com/div-B-equals-0/confitti/tree/main/notebooks/demo03-propyd.ipynb
+[demo04-other-proplyd.ipynb]: https://github.com/div-B-equals-0/confitti/tree/main/notebooks/demo04-other-propyd.ipynb
+[demo05-quadrants.ipynb]: https://github.com/div-B-equals-0/confitti/tree/main/notebooks/demo05-quadrants.ipynb
+[demo06-read-save-files.ipynb]: https://github.com/div-B-equals-0/confitti/tree/main/notebooks/demo06-read-save-files.ipynb
 [notebooks]: https://github.com/div-B-equals-0/confitti/tree/main/notebooks
 
 

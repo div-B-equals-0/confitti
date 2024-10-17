@@ -22,7 +22,6 @@ argon2-cffi-bindings==21.2.0
 arrow==1.3.0
     # via isoduration
 asdf==3.5.0
-    # via confitti
 asdf-standard==1.1.1
     # via asdf
     # via asdf-transform-schemas
@@ -287,9 +286,10 @@ python-json-logger==2.0.7
     # via jupyter-events
 pytz==2024.1
     # via pandas
-pyyaml==6.0.1
+pyyaml==6.0.2
     # via asdf
     # via astropy
+    # via confitti
     # via jupyter-events
     # via jupytext
 pyzmq==25.1.2

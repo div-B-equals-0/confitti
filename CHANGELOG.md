@@ -1,4 +1,14 @@
 # Changelog
+## v0.2.0 (2024-10-16)
+
+### New Features
+- New class `confitti.ConicFitResult` to store the results of a conic fit. 
+- Fit parameters can now be saved to and loaded from files in YAML or JSON format with 
+ `confitti.ConicFitResult` methods `.write()` and `.read()`.
+ 
+### Documentation
+- Example notebooks `notebooks/demo03-proplyd.ipynb` and `notebooks/demo04-other-proplyd.ipynb` now demonstrate saving the fit results to a file.
+- New example notebook `notebooks/demo06-read-save-files.ipynb` demonstrates loading previously saved fit results.
 
 ## v0.1.4 (2024-10-15)
 
