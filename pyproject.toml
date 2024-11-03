@@ -1,6 +1,6 @@
 [project]
 name = "confitti"
-version = "0.2.0"
+version = "0.2.1"
 description = "Fit conic sections (ellipse, parabola, hyperbola) to a set of 2d points"
 authors = [
     { name = "William Henney", email = "will@henney.org" }

@@ -6,6 +6,7 @@ See the [presentation](https://github.com/dawg-at-irya/conics-talk)
 [![](https://github.com/dawg-at-irya/conics-talk/blob/main/slides/001.jpeg?raw=true)](https://github.com/dawg-at-irya/conics-talk#individual-slides "Slides from presentation about fitting conic sections to points")
 
 ## What's new
+* 2024-11-03: Version 0.2.1 released. Fixed bug in writing save files when eccentricity does not vary. 
 * 2024-10-16: Version 0.2.0 released. Added ability to save model fit parameters to a file, and to read them back in.
 * For more details, see the [full change log](https://github.com/div-B-equals-0/confitti/tree/main/CHANGELOG.md). 
 

@@ -248,8 +248,10 @@ fig.colorbar(
 fig.savefig(figpath / f"{saveprefix}-emcee-samples.pdf", bbox_inches="tight")
 
 # ## Save results
+#
+# This time, we will save the initial parabola fit (eccentricity = 1), just to be different from the last time (demo03), where we had saved the emcee fit with freely varing eccentricity. 
 
-fit_result = confitti.ConicFitResult(result_emcee)
+fit_result = confitti.ConicFitResult(result_p)
 
 fit_result.write(saveprefix + "-fit-result.yaml")
 

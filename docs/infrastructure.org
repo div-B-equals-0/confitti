@@ -34,7 +34,7 @@
   #+end_example
 - Then after editing either the python version, we can sync them as follows
   #+begin_src sh :dir ../notebooks :results output verbatim
-    jupytext --show-changes --update --sync *.py
+    rye run jupytext --show-changes --update --sync *.py
     printf "\nLast run: $(date)\n"
   #+end_src
 
@@ -42,72 +42,119 @@
   #+begin_example
   [jupytext] Reading demo01-basic.py in format py
   [jupytext] Loading demo01-basic.ipynb
+  [jupytext] Unchanged demo01-basic.ipynb
   [jupytext] Updating demo01-basic.py with this change:
   @@ -6,7 +6,7 @@
    #       extension: .py
    #       format_name: light
    #       format_version: '1.5'
   -#       jupytext_version: 1.15.2
-  +#       jupytext_version: 1.16.1
+  +#       jupytext_version: 1.16.4
    #   kernelspec:
    #     display_name: Python 3 (ipykernel)
    #     language: python
   [jupytext] Reading demo02-emcee.py in format py
   [jupytext] Loading demo02-emcee.ipynb
+  [jupytext] Unchanged demo02-emcee.ipynb
   [jupytext] Updating demo02-emcee.py with this change:
   @@ -6,7 +6,7 @@
    #       extension: .py
    #       format_name: light
    #       format_version: '1.5'
   -#       jupytext_version: 1.15.2
-  +#       jupytext_version: 1.16.1
+  +#       jupytext_version: 1.16.4
    #   kernelspec:
    #     display_name: Python 3 (ipykernel)
    #     language: python
   [jupytext] Reading demo03-proplyd.py in format py
   [jupytext] Loading demo03-proplyd.ipynb
+  [jupytext] Unchanged demo03-proplyd.ipynb
   [jupytext] Updating demo03-proplyd.py with this change:
   @@ -6,7 +6,7 @@
    #       extension: .py
    #       format_name: light
    #       format_version: '1.5'
   -#       jupytext_version: 1.15.2
-  +#       jupytext_version: 1.16.1
+  +#       jupytext_version: 1.16.4
    #   kernelspec:
    #     display_name: Python 3 (ipykernel)
    #     language: python
   [jupytext] Reading demo04-other-proplyd.py in format py
   [jupytext] Loading demo04-other-proplyd.ipynb
+  [jupytext] Unchanged demo04-other-proplyd.ipynb
   [jupytext] Updating demo04-other-proplyd.py with this change:
   @@ -6,7 +6,7 @@
    #       extension: .py
    #       format_name: light
    #       format_version: '1.5'
   -#       jupytext_version: 1.15.2
-  +#       jupytext_version: 1.16.1
+  +#       jupytext_version: 1.16.4
    #   kernelspec:
    #     display_name: Python 3 (ipykernel)
    #     language: python
   [jupytext] Reading demo05-quadrants.py in format py
   [jupytext] Loading demo05-quadrants.ipynb
+  [jupytext] Unchanged demo05-quadrants.ipynb
   [jupytext] Updating demo05-quadrants.py with this change:
   @@ -6,7 +6,7 @@
    #       extension: .py
    #       format_name: light
    #       format_version: '1.5'
   -#       jupytext_version: 1.15.2
-  +#       jupytext_version: 1.16.1
+  +#       jupytext_version: 1.16.4
    #   kernelspec:
    #     display_name: Python 3 (ipykernel)
    #     language: python
+  [jupytext] Reading demo06-read-save-files.py in format py
+  [jupytext] Loading demo06-read-save-files.ipynb
+  [jupytext] Updating demo06-read-save-files.ipynb with this change:
+  @@ -308,8 +308,7 @@
+       "        y = np.linspace(*yy1)\n",
+       "        x1 = np.interp(y, yy1, xx1)\n",
+       "        x2 = np.interp(y, yy2, xx2)\n",
+  -    "        ax.fill_between_x(y, x1, x2, color=color, alpha=alpha)\n",
+  -    "        \n"
+  +    "        ax.fill_between_x(y, x1, x2, color=color, alpha=alpha)"
+      ]
+     },
+     {
+  [jupytext] Updating demo06-read-save-files.py with this change:
+  @@ -6,7 +6,7 @@
+   #       extension: .py
+   #       format_name: light
+   #       format_version: '1.5'
+  -#       jupytext_version: 1.15.2
+  +#       jupytext_version: 1.16.4
+   #   kernelspec:
+   #     display_name: Python 3 (ipykernel)
+   #     language: python
+  @@ -58,7 +58,6 @@
+   #
+   # First, we define a helper function to plot the +/- 1-sigma uncertainty cones so we can look for intersections. 
 
-  Last run: Fri Apr  5 10:02:33 CST 2024
+  -# +
+   def plot_theta_range(fitresult, size, ax, color, alpha=0.2):
+       """Plot the cone of uncertainty of the axis orientation of a ConicFitResult"""
+       # Find th0 +/- dth0
+  @@ -106,9 +105,7 @@
+           x1 = np.interp(y, yy1, xx1)
+           x2 = np.interp(y, yy2, xx2)
+           ax.fill_between_x(y, x1, x2, color=color, alpha=alpha)
+  -        
+
+  -# -
+
+   # Then we plot the curves. Note that in this example, there is a slight overlap in the uncertainty cones (which is fictitious because the two propyds are not really in the same place)
+
+
+  Last run: Sun Nov  3 14:32:12 CST 2024
   #+end_example
   where the ~--show-changes~ flag displays a diff of what has changed and the ~--update~ flag preserves the output cells in the notebook, even if it is being updated from the python file
 - It is not necessary to use this after editing the ~.ipynb~ file since the ~.py~ file will be updated automatically.
 - Do I want to automate this?
 - And do I want to be running it through rye?
   - Seems unnecessary. On the other hand, I am getting inconsistent versions according to whether my conda environment is active or not, which can cause unnecessary churn in the notebook files since the version number is stored in the metadata.
+    
 #+begin_src sh :results output verbatim
   which jupytext
 #+end_src
@@ -144,6 +191,9 @@
     - I made it a normal dependency rather than a dev dependency, since in the future there may be core functionality that needs it
 
 *** Overwriting the notebook files with the test output
+:PROPERTIES:
+:ID:       0CEF7EB7-F43A-4760-A727-A1CB3C1F735B
+:END:
 - [2024-04-03 Wed] I am doing this after having migrated the notebooks to use the editable install of the package
 - I will run the tests again, but this time with the ~--overwrite~ flag, and also taking advantage of parallel execution with ~-n=auto~ (using pydist-xdist ~rye add pytest-xdist --dev~)
   #+begin_src sh :dir ../notebooks :results output verbatim
@@ -161,8 +211,20 @@
 - Looks like I am currently [2024-10-15 Tue] using rye, but may update to uv in the future
 ** How to publish a new version
 - Bump the version number
-- Add to [[file:../CHANGELOG.md]]
+  - In ~pyproject.toml~ and ~__init__.py~
+- Check that the tests pass
+  - Notebooks: [[id:0CEF7EB7-F43A-4760-A727-A1CB3C1F735B][Overwriting the notebook files with the test output]]
+  - Unit tests: ~rye run pytest~ *still need to write these tests*
+- Regenerate the pure python versions of the notebooks
+  - ~rye run jupytext --show-changes --update --sync *.py~
+- Add description of changes to [[file:../CHANGELOG.md]]
+- Update [[file:../README.md]] if necessary
+- Make a git commit
 - Add a git tag
+  - ~git tag -a v0.1.0 -m "Version 0.1.0"~
+  - ~git push origin v0.1.0~
+  - Or use magit
+- Publish to PyPI
 #+begin_src sh
   rye publish --skip-existing
 #+end_src

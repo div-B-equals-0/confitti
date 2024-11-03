@@ -1,4 +1,9 @@
 # Changelog
+## v0.2.1 (2024-11-03)
+
+### Fix
+- Fix bug in `confitti.ConicFitResult` when the model has a parameter that does not vary. For instance, eccentricity for the parabola fits.  The uncertainty (`.uvar` property) for such parameters is now set to zero.
+
 ## v0.2.0 (2024-10-16)
 
 ### New Features

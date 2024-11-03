@@ -58,7 +58,6 @@ arcfits[3].xy
 #
 # First, we define a helper function to plot the +/- 1-sigma uncertainty cones so we can look for intersections. 
 
-# +
 def plot_theta_range(fitresult, size, ax, color, alpha=0.2):
     """Plot the cone of uncertainty of the axis orientation of a ConicFitResult"""
     # Find th0 +/- dth0
@@ -106,9 +105,7 @@ def plot_theta_range(fitresult, size, ax, color, alpha=0.2):
         x1 = np.interp(y, yy1, xx1)
         x2 = np.interp(y, yy2, xx2)
         ax.fill_between_x(y, x1, x2, color=color, alpha=alpha)
-        
 
-# -
 
 # Then we plot the curves. Note that in this example, there is a slight overlap in the uncertainty cones (which is fictitious because the two propyds are not really in the same place)
 

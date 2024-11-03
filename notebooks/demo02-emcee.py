@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: light
 #       format_version: '1.5'
-#       jupytext_version: 1.16.1
+#       jupytext_version: 1.16.4
 #   kernelspec:
 #     display_name: Python 3 (ipykernel)
 #     language: python
@@ -405,6 +405,18 @@ fig.savefig(figpath / f"{saveprefix}-emcee-samples-e-improved.pdf", bbox_inches=
 # Here we can see that the full range of eccentricities is pretty much filled in. We are rainbow color coding the samples according to the eccentricity from blue (low eccentricity ellipses, $e < 0.5$) through cyan, green, yellow to orange (parabolas, $e = 1$) and red (hyperbolae, $e > 1$).
 #
 # The samples around $e \approx 1$ have a vertical orientation, whereas the ellipses slew to the right as the eccentricity decreases. Note however that the ellipses with $e < 0.8$ do not fit very well, bulging in front of the points in the near wing. If we had more points in the wings, especially on the right, we could probably eliminate these fits from the running.
+
+# ## Write the fit to a file
+
+fit_result = confitti.ConicFitResult(result_emcee_ee)
+
+fit_result.write(saveprefix + "-fit-result.yaml")
+
+fit_result_pp = confitti.ConicFitResult(result_emcee_pp)
+
+
+
+fit_result_pp.write(saveprefix + "-fit-result-pp.yaml")
 
 # ## Execution time for notebook
 

@@ -184,7 +184,12 @@ class ConicFitResult:
         else:
             # Make sure everything is is a standard float so that it will serialize nicely
             self.params = {k: float(v.value) for (k, v) in result.params.items()}
-            self.uparams = {k: float(v.stderr) for (k, v) in result.params.items()}
+            # The parameter uncertainty is trickier since we need to
+            # account for the possibility that the stderr is None for
+            # fixed parameters, such as the eccentricity in the
+            # parabola-only case
+            self.uparams = {k: (0.0 if v.stderr is None else float(v.stderr))
+                            for (k, v) in result.params.items()}
             self.xy = XYconic(**self.params)
 
     def __repr__(self):
