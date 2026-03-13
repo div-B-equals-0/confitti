@@ -43,7 +43,7 @@ def init_conic_from_xy(xdata, ydata):
     # Check that the input data is valid
     assert len(xdata) == len(ydata)
     assert len(xdata) > 4  # Need at least 5 points to fit a conic
-    # Focus is initialized to be median position of the data points
+    # Focus is initialized to be mean position of the data points
     x0 = np.mean(xdata)
     y0 = np.mean(ydata)
     # Scale is initialized to be average radius of the closest 5 points
@@ -201,7 +201,7 @@ class ConicFitResult:
     def to_dict(self) -> dict:
         """Return a dictionary representation of the object.
         This may be used to serialize the object to JSON or YAML.
-        The XYconic object is omitted since it can be revreated from the params.
+        The XYconic object is omitted since it can be recreated from the params.
         """
         return {
             "params": self.params,

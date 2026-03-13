@@ -52,6 +52,20 @@
 
 *** TODO Adding penalty to the cost function
 In the Lopez-Rubio:2018a paper, they added an extra term to the cost function to penalize parabolas with very small sizes.  I think that there is no good way of doing this while using a vector return value of the objective function, but might work if I use a scalar return value. This will require using a different minimization algorithm.
-ut so far, I have not found any problems with the scale parameter collapsing to a small value, so I will leave this for later.
+But so far, I have not found any problems with the scale parameter collapsing to a small value, so I will leave this for later.
 
 
+
+*** DONE Description for appendix of Vanessa paper
+CLOSED: [2025-02-03 Mon 18:32]
+:PROPERTIES:
+:EXPORT_FILE_NAME: description-for-appendix
+:END:
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2025-02-03 Mon 18:32] \\
+  Finally got this finished and added to the Overleaf
+- Note taken on [2025-01-21 Tue 10:43] \\
+  Draft of description of algorithm
+:END:
+- See this PDF file
+  - [[file:dr21-app-B.pdf]]
