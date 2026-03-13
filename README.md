@@ -49,4 +49,5 @@ Some of the literature on the topic of fitting conic sections to points is descr
 [demo06-read-save-files.ipynb]: https://github.com/div-B-equals-0/confitti/tree/main/notebooks/demo06-read-save-files.ipynb
 [notebooks]: https://github.com/div-B-equals-0/confitti/tree/main/notebooks
 
-
+## Funding
+We gratefully acknowledge financial support provided by Dirección General de Asuntos del Personal Académico, Universidad Nacional Autónoma de México, through grant IN109823 of the ‘Programa de Apoyo a Proyectos de Investigación e Inovación Tecnológica’.
