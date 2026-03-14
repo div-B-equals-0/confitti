@@ -1,4 +1,9 @@
 # Changelog
+## v0.2.4 (2026-03-13)
+
+### Documentation
+- Improve consistency
+
 ## v0.2.3 (2026-03-13)
 
 ### Documentation

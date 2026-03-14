@@ -236,7 +236,7 @@
     uv run --with confitti --no-project -- python -c "import confitti; print(confitti.__version__)"
   #+end_src
 - Add description of changes to [[file:../CHANGELOG.md]]
-- Update [[file:../README.md]] if necessary
+- Update [[file:../README.md]] if necessary (for instance, the "What's new" section)
 - Make a git commit and add a git tag
   #+begin_src sh
     git commit -am "Release v$(uv version --short)" && git tag "v$(uv version --short)"
