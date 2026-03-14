@@ -1,4 +1,9 @@
 # Changelog
+## v0.2.5 (2026-03-13)
+
+### Documentation Fix
+- Wrong date in release notes
+
 ## v0.2.4 (2026-03-13)
 
 ### Documentation

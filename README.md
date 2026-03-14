@@ -7,7 +7,7 @@ See the [presentation](https://github.com/dawg-at-irya/conics-talk)
 
 ## What's new
 
-* 2024-11-03: Version 0.2.4 released. Updated build process to uv and added grant acknowledgements
+* 2026-03-13: Version 0.2.4 released. Updated build process to uv and added grant acknowledgements
 * For more details, see the [full change log](https://github.com/div-B-equals-0/confitti/tree/main/CHANGELOG.md). 
 
 ## Installation
