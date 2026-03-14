@@ -194,10 +194,14 @@
 :PROPERTIES:
 :ID:       0CEF7EB7-F43A-4760-A727-A1CB3C1F735B
 :END:
+:LOGBOOK:
+- Note taken on [2026-03-13 Fri 20:14] \\
+  Changed from rye to uv
+:END:
 - [2024-04-03 Wed] I am doing this after having migrated the notebooks to use the editable install of the package
 - I will run the tests again, but this time with the ~--overwrite~ flag, and also taking advantage of parallel execution with ~-n=auto~ (using pydist-xdist ~rye add pytest-xdist --dev~)
   #+begin_src sh :dir ../notebooks :results output verbatim
-    rye run pytest --nbmake --overwrite -n=auto demo*.ipynb
+    uv run pytest --nbmake --overwrite -n=auto demo*.ipynb
   #+end_src
 
 ** Testing functions within a notebook with ~ipytest~
@@ -214,9 +218,9 @@
   - In ~pyproject.toml~ and ~__init__.py~
 - Check that the tests pass
   - Notebooks: [[id:0CEF7EB7-F43A-4760-A727-A1CB3C1F735B][Overwriting the notebook files with the test output]]
-  - Unit tests: ~rye run pytest~ *still need to write these tests*
+  - Unit tests: ~uv run pytest~ *still need to write these tests*
 - Regenerate the pure python versions of the notebooks
-  - ~rye run jupytext --show-changes --update --sync *.py~
+  - ~uv run jupytext --show-changes --update --sync *.py~
 - Add description of changes to [[file:../CHANGELOG.md]]
 - Update [[file:../README.md]] if necessary
 - Make a git commit
@@ -226,7 +230,7 @@
   - Or use magit
 - Publish to PyPI
 #+begin_src sh
-  rye publish --skip-existing
+  uv publish
 #+end_src
 * Documentation
 ** TODO Building a prettier version of docs for github

@@ -1,4 +1,13 @@
 # Changelog
+## v0.2.2 (2026-03-13)
+
+### Documentation
+- Add acknowledgement of PAPIIT project grant from DGAPA UNAM
+
+### Developer tooling
+- Migrate from `rye` to `uv`
+
+
 ## v0.2.1 (2024-11-03)
 
 ### Fix
