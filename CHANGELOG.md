@@ -1,4 +1,13 @@
 # Changelog
+## v0.2.3 (2026-03-13)
+
+### Documentation
+- Update instructions in `infrastructure.org`
+
+### Developer tooling
+- Ditch hatchling build backend (pure uv now)
+- Generate version string programatically in __init__.py
+
 ## v0.2.2 (2026-03-13)
 
 ### Documentation
