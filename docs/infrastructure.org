@@ -215,18 +215,32 @@
 - Looks like I am currently [2024-10-15 Tue] using rye, but may update to uv in the future
 ** How to publish a new version
 - Bump the version number
+  #+begin_src sh
+    uv version --bump patch
+  #+end_src
   - In ~pyproject.toml~ and ~__init__.py~
 - Check that the tests pass
   - Notebooks: [[id:0CEF7EB7-F43A-4760-A727-A1CB3C1F735B][Overwriting the notebook files with the test output]]
-  - Unit tests: ~uv run pytest~ *still need to write these tests*
+  - Unit tests:
+    #+begin_src sh
+      uv run pytest
+    #+end_src
+    *still need to write these tests*
 - Regenerate the pure python versions of the notebooks
-  - ~uv run jupytext --show-changes --update --sync *.py~
+  #+begin_src sh
+    uv run jupytext --show-changes --update --sync *.py
+  #+end_src
+- Buld and test that the version is updated dynamically in python code
+  #+begin_src sh
+    rm -rf dist && uv build
+    uv run --with confitti --no-project -- python -c "import confitti; print(confitti.__version__)"
+  #+end_src
 - Add description of changes to [[file:../CHANGELOG.md]]
 - Update [[file:../README.md]] if necessary
-- Make a git commit
-- Add a git tag
-  - ~git tag -a v0.1.0 -m "Version 0.1.0"~
-  - ~git push origin v0.1.0~
+- Make a git commit and add a git tag
+  #+begin_src sh
+    git commit -am "Release v$(uv version --short)" && git tag "v$(uv version --short)"
+  #+end_src
   - Or use magit
 - Publish to PyPI
 #+begin_src sh
